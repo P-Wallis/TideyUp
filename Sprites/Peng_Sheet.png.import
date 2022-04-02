@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Peng_Jump.png-a4015b241e2fc5a9999016cfa6bf16d9.stex"
+path="res://.import/Peng_Sheet.png-e68ef781f502f755ce85948881cd3604.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Peng_Jump.png"
-dest_files=[ "res://.import/Peng_Jump.png-a4015b241e2fc5a9999016cfa6bf16d9.stex" ]
+source_file="res://Sprites/Peng_Sheet.png"
+dest_files=[ "res://.import/Peng_Sheet.png-e68ef781f502f755ce85948881cd3604.stex" ]
 
 [params]
 
