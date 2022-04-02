@@ -1,0 +1,132 @@
+{
+	"textures": [
+		{
+			"image": "Peng_Sheet.png",
+			"size": {
+				"w": 1236,
+				"h": 256
+			},
+			"sprites": [
+				{
+					"filename": "Peng_Idle_01.png",
+					"region": {
+						"x": 0,
+						"y": 0,
+						"w": 153,
+						"h": 256
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "Peng_Idle_02.png",
+					"region": {
+						"x": 206,
+						"y": 0,
+						"w": 153,
+						"h": 256
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "Peng_Jump.png",
+					"region": {
+						"x": 412,
+						"y": 0,
+						"w": 206,
+						"h": 256
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "Peng_Walk_01.png",
+					"region": {
+						"x": 618,
+						"y": 0,
+						"w": 187,
+						"h": 256
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "Peng_Walk_02.png",
+					"region": {
+						"x": 824,
+						"y": 0,
+						"w": 150,
+						"h": 256
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "Peng_Walk_03.png",
+					"region": {
+						"x": 1030,
+						"y": 0,
+						"w": 159,
+						"h": 256
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:b3343d71bbf1a09cc1cb4e5360a294c0:55f3337190f74d22bf287b8954763f00:b3a7834a10eaab2ea726743e088b8541$"
+	}
+}
