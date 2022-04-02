@@ -1,0 +1,170 @@
+{
+	"textures": [
+		{
+			"image": "Peng_Sheet.png",
+			"size": {
+				"w": 824,
+				"h": 512
+			},
+			"sprites": [
+				{
+					"filename": "Peng_Fix_01.png",
+					"region": {
+						"x": 0,
+						"y": 0,
+						"w": 141,
+						"h": 256
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "Peng_Fix_02.png",
+					"region": {
+						"x": 206,
+						"y": 0,
+						"w": 141,
+						"h": 256
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "Peng_Idle_01.png",
+					"region": {
+						"x": 412,
+						"y": 0,
+						"w": 153,
+						"h": 256
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "Peng_Idle_02.png",
+					"region": {
+						"x": 618,
+						"y": 0,
+						"w": 153,
+						"h": 256
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "Peng_Jump.png",
+					"region": {
+						"x": 0,
+						"y": 256,
+						"w": 206,
+						"h": 256
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "Peng_Walk_01.png",
+					"region": {
+						"x": 206,
+						"y": 256,
+						"w": 187,
+						"h": 256
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "Peng_Walk_02.png",
+					"region": {
+						"x": 412,
+						"y": 256,
+						"w": 150,
+						"h": 256
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "Peng_Walk_03.png",
+					"region": {
+						"x": 618,
+						"y": 256,
+						"w": 159,
+						"h": 256
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:5e2c55d765d059a4be97a2bc4fc9add2:415a4443451d06a3d7166cb3ce50ba3f:7a735d1448960213b394b51313a06306$"
+	}
+}
