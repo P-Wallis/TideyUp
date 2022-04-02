@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TideyUp", "TideyUp.csproj", "{B763CD93-EB03-4A46-A559-91DA3C6C61BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		ExportDebug|Any CPU = ExportDebug|Any CPU
+		ExportRelease|Any CPU = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B763CD93-EB03-4A46-A559-91DA3C6C61BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B763CD93-EB03-4A46-A559-91DA3C6C61BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B763CD93-EB03-4A46-A559-91DA3C6C61BB}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{B763CD93-EB03-4A46-A559-91DA3C6C61BB}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{B763CD93-EB03-4A46-A559-91DA3C6C61BB}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{B763CD93-EB03-4A46-A559-91DA3C6C61BB}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {94930539-F83F-4D24-A1B4-BD1C288E825E}
+	EndGlobalSection
+EndGlobal
