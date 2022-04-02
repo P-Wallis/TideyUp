@@ -4,7 +4,7 @@
 
 [sub_resource type="CapsuleShape2D" id=8]
 radius = 86.6667
-height = 93.3333
+height = 86.6667
 
 [sub_resource type="AtlasTexture" id=1]
 flags = 4
@@ -54,15 +54,16 @@ animations = [ {
 "speed": 2.0
 } ]
 
-[node name="Area2D" type="Area2D"]
-scale = Vector2( 0.3, 0.3 )
+[node name="Player" type="KinematicBody2D"]
+position = Vector2( 8, 0 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2( -26.6667, 0 )
+position = Vector2( -8, 0 )
+scale = Vector2( 0.3, 0.3 )
 shape = SubResource( 8 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+scale = Vector2( 0.3, 0.3 )
 frames = SubResource( 7 )
 animation = "Idle"
 frame = 1
