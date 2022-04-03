@@ -65,7 +65,11 @@ public class CharacterController : KinematicBody2D
             velocity.y += JumpImpulse;
             _animatedSprite.Play("Jump");
         }
-
+        //Building 
+        if (Input.IsMouseButtonPressed(1))
+        {
+            _animatedSprite.Play("Build");
+        }
         // ...
     // We don't need to multiply velocity by delta because "MoveAndSlide" already takes delta time into account.
 
