@@ -1,0 +1,63 @@
+{
+	"textures": [
+		{
+			"image": "Level.png",
+			"size": {
+				"w": 826,
+				"h": 474
+			},
+			"sprites": [
+				{
+					"filename": "Surface.png",
+					"region": {
+						"x": 0,
+						"y": 0,
+						"w": 826,
+						"h": 208
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Water.png",
+					"region": {
+						"x": 0,
+						"y": 208,
+						"w": 826,
+						"h": 191
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "Bottom.png",
+					"region": {
+						"x": 0,
+						"y": 399,
+						"w": 826,
+						"h": 75
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:5f865d5ceb8b19183a39faf7db5fa4a9:71f3e0b2bdcb72ace81dd9c114e3d87a:1518ff76eccec3eafa427d8e07cf33e4$"
+	}
+}

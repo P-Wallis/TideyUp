@@ -4,23 +4,24 @@ using System.Collections.Generic;
 
 public class Plank : RigidBody2D
 {
-    public const string IS_PLANK_SIGNAL = "IsPlank";
+    public const string IS_SIGNAL = "IsPlank";
     private const int MAX_CONNECTIONS = 5;
     private const float PIN_SOFTNESS = 1;
     private const float PLAYER_WALK_ANGLE = 30; // in degrees
+    private const float PLAYER_WALK_DISTANCE = 10;
 
 
     public static Node playerNode;
 
     private static List<Plank> planks = new List<Plank>();
-    private static List<Line2D> lines = new List<Line2D>();
+
     public Position2D left, right;
 
     private int plankIndex = -1;
 
     public Plank()
     {
-        AddUserSignal(IS_PLANK_SIGNAL);
+        AddUserSignal(IS_SIGNAL);
         plankIndex = planks.Count;
         planks.Add(this);
     }
@@ -28,12 +29,6 @@ public class Plank : RigidBody2D
     {
         left = GetNode<Position2D>("LeftHandle");
         right = GetNode<Position2D>("RightHandle");
-
-        for(int i=0; i<lines.Count; i++)
-        {
-            lines[i].QueueFree();
-        }
-        lines.Clear();
     }
 
     private bool collidesWithPlayer = true;
@@ -49,6 +44,8 @@ public class Plank : RigidBody2D
             Vector2 dir = r - l;
             dir = dir / dir.DistanceTo(Vector2.Zero); // normalize the direction vector
 
+            Modulate = new Color(0.25f, 0.25f, 0.25f);
+
             if(Math.Abs(dir.Dot(Vector2.Up)) < (PLAYER_WALK_ANGLE / 90))
             {
                 // Check if the player is above us
@@ -60,17 +57,32 @@ public class Plank : RigidBody2D
 
                 if(p.y < (y + 2f))
                 {
-                    if(!collidesWithPlayer) 
-                    {
-                        collidesWithPlayer = true;
-                        RemoveCollisionExceptionWith(playerNode);
-                        SetMode(RigidBody2D.ModeEnum.Kinematic);
-                    }
-                    return;
-                }
+                    // check if the player is close
+                    float distance = float.MaxValue;
+                    float l_to_p = (r-l).Dot(p-l);
+                    float r_to_p = (l-r).Dot(p-r);
 
-                // Set color based on angle
-                Modulate = new Color(0.25f, 0.25f, 0.25f);
+                    if(l_to_p < 0 || r_to_p < 0)
+                    {
+                        distance = Math.Min(l.DistanceTo(p), r.DistanceTo(p));
+                    }
+                    else
+                    {
+                        distance = Math.Abs(y - p.y) / (float)Math.Sqrt((double)(m*m + 1));
+                    }
+
+
+                    if(distance < PLAYER_WALK_DISTANCE)
+                    {
+                        if(!collidesWithPlayer) 
+                        {
+                            collidesWithPlayer = true;
+                            RemoveCollisionExceptionWith(playerNode);
+                            SetMode(RigidBody2D.ModeEnum.Kinematic);
+                        }
+                        return;
+                    }
+                }
             }
             else
             {
@@ -84,17 +96,6 @@ public class Plank : RigidBody2D
                 SetMode(RigidBody2D.ModeEnum.Rigid);
             }
         }
-    }
-
-    void DrawLine(Vector2 l, Vector2 r)
-    {
-        Node parent = this.GetParent();
-        Line2D line = new Line2D();
-        parent.AddChild(line);
-        line.AddPoint(l);
-        line.AddPoint(r);
-
-        lines.Add(line);
     }
 
     public void ConnectToOtherPlanks()
@@ -125,9 +126,6 @@ public class Plank : RigidBody2D
                 pin.SetSoftness(PIN_SOFTNESS);
                 pin.SetNodeA(this.GetPath());
                 pin.SetNodeB(otherPlank.GetPath());
-
-                //DrawLine(left.GetGlobalPosition(), right.GetGlobalPosition());
-                //DrawLine(otherPlank.left.GetGlobalPosition(), otherPlank.right.GetGlobalPosition());
 
                 currentConnections++;
                 if(currentConnections >= MAX_CONNECTIONS)
