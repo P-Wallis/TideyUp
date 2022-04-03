@@ -1,6 +1,96 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Sprites/Peng_Sheet.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://CharacterController.cs" type="Script" id=3]
+[ext_resource path="res://Building/House.tscn" type="PackedScene" id=4]
 
-[node name="Player" instance=ExtResource( 1 )]
-position = Vector2( 520, 290 )
+[sub_resource type="CapsuleShape2D" id=7]
+radius = 86.6667
+height = 86.6667
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 256, 206, 256 )
+
+[sub_resource type="AtlasTexture" id=3]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 206, 256, 206, 256 )
+
+[sub_resource type="AtlasTexture" id=4]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 412, 256, 206, 256 )
+
+[sub_resource type="AtlasTexture" id=5]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 206, 0, 206, 256 )
+
+[sub_resource type="AtlasTexture" id=6]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 206, 256 )
+
+[sub_resource type="AtlasTexture" id=1]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 412, 0, 206, 256 )
+
+[sub_resource type="SpriteFrames" id=8]
+animations = [ {
+"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ],
+"loop": true,
+"name": "Run",
+"speed": 7.0
+}, {
+"frames": [ SubResource( 5 ), SubResource( 6 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 2.0
+}, {
+"frames": [ SubResource( 1 ) ],
+"loop": true,
+"name": "Jump",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 545.5, 18.5 )
+
+[node name="Main" type="Node2D"]
+
+[node name="House" parent="." instance=ExtResource( 4 )]
+position = Vector2( 642, 544 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 239, 505 )
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Player"]
+visible = false
+position = Vector2( -8, 0 )
+scale = Vector2( 0.3, 0.3 )
+shape = SubResource( 7 )
+
+[node name="AnimatedSprite2" type="AnimatedSprite" parent="Player"]
+visible = false
+position = Vector2( -8, 0 )
+scale = Vector2( 0.09, 0.09 )
+frames = SubResource( 8 )
+animation = "Idle"
+frame = 1
+playing = true
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2( 518, 563 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+position = Vector2( -1, 0 )
+shape = SubResource( 9 )
+
+[node name="Polygon2D" type="Polygon2D" parent="Ground/CollisionShape2D"]
+position = Vector2( -535, -4 )
+polygon = PoolVector2Array( 1, -9, -7, 9, 94, 8, 1017, 11, 1022, -15 )

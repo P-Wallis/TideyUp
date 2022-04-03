@@ -1,0 +1,69 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Building/BuildingBase.cs" type="Script" id=1]
+[ext_resource path="res://Building/Plank_Big.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Building/Plank_Small.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Building/Plank.tscn" type="PackedScene" id=4]
+
+[node name="House" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="BigPlank(RigidBody2D)" parent="." instance=ExtResource( 2 )]
+position = Vector2( -1, -152 )
+
+[node name="BigPlank(RigidBody2D)2" parent="." instance=ExtResource( 2 )]
+position = Vector2( 0, -446 )
+
+[node name="BigPlank(RigidBody2D)5" parent="." instance=ExtResource( 2 )]
+position = Vector2( -101, -459 )
+rotation = -0.785397
+
+[node name="BigPlank(RigidBody2D)6" parent="." instance=ExtResource( 2 )]
+position = Vector2( 102, -459 )
+rotation = 0.785397
+
+[node name="BigPlank(RigidBody2D)3" parent="." instance=ExtResource( 2 )]
+position = Vector2( -147, -297 )
+rotation = 1.57079
+
+[node name="BigPlank(RigidBody2D)4" parent="." instance=ExtResource( 2 )]
+position = Vector2( 147, -298 )
+rotation = 1.57079
+
+[node name="Plank(RigidBody2D)8" parent="." instance=ExtResource( 4 )]
+position = Vector2( -131, -80 )
+rotation = -1.57096
+
+[node name="Plank(RigidBody2D)16" parent="." instance=ExtResource( 4 )]
+position = Vector2( 131, -80 )
+rotation = -1.57096
+
+[node name="Plank(RigidBody2D)17" parent="." instance=ExtResource( 4 )]
+position = Vector2( 0, -80 )
+rotation = -1.57096
+
+[node name="SmallPlank(RigidBody2D)" parent="." instance=ExtResource( 3 )]
+position = Vector2( -15, -124 )
+rotation = 1.0472
+
+[node name="SmallPlank(RigidBody2D)3" parent="." instance=ExtResource( 3 )]
+position = Vector2( 15, -123 )
+rotation = -1.0472
+
+[node name="SmallPlank(RigidBody2D)4" parent="." instance=ExtResource( 3 )]
+position = Vector2( -110, -134 )
+rotation = -0.785397
+
+[node name="SmallPlank(RigidBody2D)5" parent="." instance=ExtResource( 3 )]
+position = Vector2( -132, -179 )
+rotation = 0.785398
+scale = Vector2( 1, 1 )
+
+[node name="SmallPlank(RigidBody2D)8" parent="." instance=ExtResource( 3 )]
+position = Vector2( 131, -175 )
+rotation = -0.785398
+scale = Vector2( 1, 1 )
+
+[node name="SmallPlank(RigidBody2D)2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 108, -130 )
+rotation = 0.785397
