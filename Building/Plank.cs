@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class Plank : RigidBody2D
 {
+    public const string IS_PLANK_SIGNAL = "IsPlank";
     private const int MAX_CONNECTIONS = 5;
     private const float PIN_SOFTNESS = 1;
     private static List<Plank> planks = new List<Plank>();
@@ -12,11 +13,14 @@ public class Plank : RigidBody2D
 
     private int plankIndex = -1;
 
-    public override void _Ready()
+    public Plank()
     {
+        AddUserSignal(IS_PLANK_SIGNAL);
         plankIndex = planks.Count;
         planks.Add(this);
-
+    }
+    public override void _Ready()
+    {
         left = GetNode<Position2D>("LeftHandle");
         right = GetNode<Position2D>("RightHandle");
 
@@ -61,8 +65,8 @@ public class Plank : RigidBody2D
                 pin.SetNodeA(this.GetPath());
                 pin.SetNodeB(otherPlank.GetPath());
 
-                DrawLine(left.GetGlobalPosition(), right.GetGlobalPosition());
-                DrawLine(otherPlank.left.GetGlobalPosition(), otherPlank.right.GetGlobalPosition());
+                //DrawLine(left.GetGlobalPosition(), right.GetGlobalPosition());
+                //DrawLine(otherPlank.left.GetGlobalPosition(), otherPlank.right.GetGlobalPosition());
 
                 currentConnections++;
                 if(currentConnections >= MAX_CONNECTIONS)
