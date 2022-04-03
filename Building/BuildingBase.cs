@@ -19,7 +19,7 @@ public class BuildingBase : Node2D
         for(int i=0; i<children.Count; i++)
         {
             child = (Node)children[i];
-            if(child.HasSignal(Plank.IS_PLANK_SIGNAL))
+            if(child.HasSignal(Plank.IS_SIGNAL))
             {
                 plank = (Plank)children[i];
                 plank.ConnectToOtherPlanks();
