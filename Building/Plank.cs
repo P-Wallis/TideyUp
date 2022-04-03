@@ -13,7 +13,6 @@ public class Plank : RigidBody2D
     public static Node playerNode;
 
     private static List<Plank> planks = new List<Plank>();
-    private static List<Line2D> lines = new List<Line2D>();
     public Position2D left, right;
 
     private int plankIndex = -1;
@@ -28,12 +27,6 @@ public class Plank : RigidBody2D
     {
         left = GetNode<Position2D>("LeftHandle");
         right = GetNode<Position2D>("RightHandle");
-
-        for(int i=0; i<lines.Count; i++)
-        {
-            lines[i].QueueFree();
-        }
-        lines.Clear();
     }
 
     private bool collidesWithPlayer = true;
@@ -86,17 +79,6 @@ public class Plank : RigidBody2D
         }
     }
 
-    void DrawLine(Vector2 l, Vector2 r)
-    {
-        Node parent = this.GetParent();
-        Line2D line = new Line2D();
-        parent.AddChild(line);
-        line.AddPoint(l);
-        line.AddPoint(r);
-
-        lines.Add(line);
-    }
-
     public void ConnectToOtherPlanks()
     {
         Plank otherPlank;
@@ -125,9 +107,6 @@ public class Plank : RigidBody2D
                 pin.SetSoftness(PIN_SOFTNESS);
                 pin.SetNodeA(this.GetPath());
                 pin.SetNodeB(otherPlank.GetPath());
-
-                //DrawLine(left.GetGlobalPosition(), right.GetGlobalPosition());
-                //DrawLine(otherPlank.left.GetGlobalPosition(), otherPlank.right.GetGlobalPosition());
 
                 currentConnections++;
                 if(currentConnections >= MAX_CONNECTIONS)
