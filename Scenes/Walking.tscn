@@ -1,8 +1,10 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Sprites/Peng_Sheet.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://CharacterController.cs" type="Script" id=3]
 
-[sub_resource type="CapsuleShape2D" id=8]
+[sub_resource type="CapsuleShape2D" id=7]
 radius = 86.6667
 height = 86.6667
 
@@ -36,7 +38,7 @@ flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 412, 0, 206, 256 )
 
-[sub_resource type="SpriteFrames" id=7]
+[sub_resource type="SpriteFrames" id=8]
 animations = [ {
 "frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ],
 "loop": true,
@@ -54,17 +56,34 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[node name="Player" type="KinematicBody2D"]
-position = Vector2( 8, 0 )
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 545.5, 18.5 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Node2D" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Player"]
 position = Vector2( -8, 0 )
 scale = Vector2( 0.3, 0.3 )
-shape = SubResource( 8 )
+shape = SubResource( 7 )
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-scale = Vector2( 0.3, 0.3 )
-frames = SubResource( 7 )
+[node name="AnimatedSprite2" type="AnimatedSprite" parent="Player"]
+visible = false
+position = Vector2( -8, 0 )
+scale = Vector2( 0.09, 0.09 )
+frames = SubResource( 8 )
 animation = "Idle"
 frame = 1
 playing = true
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 458, 221 )
+shape = SubResource( 9 )
+
+[node name="Polygon2D" type="Polygon2D" parent="StaticBody2D/CollisionShape2D"]
+position = Vector2( -535, -4 )
+polygon = PoolVector2Array( 1, -9, -7, 9, 94, 8, 1017, 11, 1022, -15 )
