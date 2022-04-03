@@ -58,9 +58,16 @@ polygon = PoolVector2Array( -2.49829, -0.606247, -522, -1, -522, 42, -2, 42 )
 
 [node name="Surface" type="Sprite" parent="."]
 material = ExtResource( 5 )
-position = Vector2( 511.25, 564 )
+position = Vector2( 511, 398 )
 scale = Vector2( 1.25273, 1 )
 z_index = 2
 texture = ExtResource( 3 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 825.399, 205.278 )
+
+[node name="Deep" type="Sprite" parent="Surface"]
+material = ExtResource( 5 )
+position = Vector2( 1.39694, 174 )
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 212.595, 823.066, 183.117 )
