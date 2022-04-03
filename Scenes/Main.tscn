@@ -4,7 +4,7 @@
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Sprites/Level.png" type="Texture" id=3]
 [ext_resource path="res://Building/House.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Scenes/Multiply.tres" type="Material" id=5]
+[ext_resource path="res://Scenes/Water.tscn" type="PackedScene" id=5]
 
 [sub_resource type="RectangleShape2D" id=9]
 extents = Vector2( 545.5, 18.5 )
@@ -56,18 +56,5 @@ scale = Vector2( 2.006, 3.299 )
 color = Color( 0.976471, 0.678431, 0.254902, 1 )
 polygon = PoolVector2Array( -2.49829, -0.606247, -522, -1, -522, 42, -2, 42 )
 
-[node name="Surface" type="Sprite" parent="."]
-material = ExtResource( 5 )
-position = Vector2( 511, 398 )
-scale = Vector2( 1.25273, 1 )
-z_index = 2
-texture = ExtResource( 3 )
-region_enabled = true
-region_rect = Rect2( 0, 0, 825.399, 205.278 )
-
-[node name="Deep" type="Sprite" parent="Surface"]
-material = ExtResource( 5 )
-position = Vector2( 1.5965, 174 )
-texture = ExtResource( 3 )
-region_enabled = true
-region_rect = Rect2( 0, 235, 823.066, 160.712 )
+[node name="Water" parent="." instance=ExtResource( 5 )]
+position = Vector2( 513, 703 )
