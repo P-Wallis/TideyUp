@@ -13,7 +13,6 @@ public class Plank : RigidBody2D
     public override void _Ready()
     {
         planks.Add(this);
-        GD.Print("Planks: " + planks.Count);
         this.Connect("body_entered", this, "OnBodyEntered");
         left = GetNode<Position2D>("LeftHandle");
         right = GetNode<Position2D>("RightHandle");
@@ -42,7 +41,7 @@ public class Plank : RigidBody2D
                 pin.SetNodeB(otherPlank.GetPath());
             }
         }
-        
+
         autoConnectOverlapping = false;
     }
 
