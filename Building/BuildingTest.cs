@@ -28,5 +28,6 @@ public class BuildingTest : Node2D
         AddChild(plank);
         plank.SetPosition(position);
         plank.SetRotationDegrees(Random.Range(-12,12) * 30);
+        plank.ConnectToOtherPlanks();
     }
 }
