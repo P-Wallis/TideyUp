@@ -75,6 +75,7 @@ position = Vector2( -8, 0 )
 scale = Vector2( 0.09, 0.09 )
 frames = SubResource( 8 )
 animation = "Idle"
+frame = 1
 playing = true
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]

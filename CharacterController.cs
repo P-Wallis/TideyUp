@@ -7,9 +7,16 @@ public class CharacterController : KinematicBody2D
     const int walkSpeed = 200;
     [Export]
     public int JumpImpulse =  -400;
+    public float spriteScale = .3f;
     Vector2 velocity;
     public AnimatedSprite _animatedSprite;
-    public string direction = "right";
+    public Directions direction = Directions.right;
+    public enum Directions
+    {
+        left,
+        right,
+    }
+ 
 
     public override void _Ready()
     {
@@ -28,28 +35,24 @@ public class CharacterController : KinematicBody2D
         {
             velocity.y += delta * gravity;
         }
-		
-        if (Input.IsActionPressed("ui_left") && direction=="left")
+
+        if (Input.IsActionPressed("ui_left"))
         {
+            if (direction == Directions.right)
+            {
+                direction = Directions.left;
+                _animatedSprite.Scale = new Vector2(-spriteScale, spriteScale);
+            }
             velocity.x = -walkSpeed;
             _animatedSprite.Play("Run");
         }
-        else if(Input.IsActionPressed("ui_left") && direction == "right")
+        else if (Input.IsActionPressed("ui_right"))
         {
-            direction = "left";
-            _animatedSprite.Scale = new Vector2(-.3f, .3f);
-            velocity.x = -walkSpeed;
-            _animatedSprite.Play("Run");
-        }
-        else if (Input.IsActionPressed("ui_right") && direction == "right")
-        {
-            velocity.x = walkSpeed;
-            _animatedSprite.Play("Run");
-        }
-        else if (Input.IsActionPressed("ui_right") && direction == "left")
-        {
-            direction = "right";
-            _animatedSprite.Scale = new Vector2(.3f, .3f);
+            if (direction == Directions.left)
+            {
+                direction = Directions.right;
+                _animatedSprite.Scale = new Vector2(spriteScale, spriteScale);
+            }
             velocity.x = walkSpeed;
             _animatedSprite.Play("Run");
         }
