@@ -57,12 +57,10 @@ rotation = -0.785397
 [node name="SmallPlank(RigidBody2D)5" parent="." instance=ExtResource( 3 )]
 position = Vector2( -132, -179 )
 rotation = 0.785398
-scale = Vector2( 1, 1 )
 
 [node name="SmallPlank(RigidBody2D)8" parent="." instance=ExtResource( 3 )]
 position = Vector2( 131, -175 )
 rotation = -0.785398
-scale = Vector2( 1, 1 )
 
 [node name="SmallPlank(RigidBody2D)2" parent="." instance=ExtResource( 3 )]
 position = Vector2( 108, -130 )

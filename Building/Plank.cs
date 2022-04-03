@@ -7,6 +7,11 @@ public class Plank : RigidBody2D
     public const string IS_PLANK_SIGNAL = "IsPlank";
     private const int MAX_CONNECTIONS = 5;
     private const float PIN_SOFTNESS = 1;
+    private const float PLAYER_WALK_ANGLE = 30; // in degrees
+
+
+    public static Node playerNode;
+
     private static List<Plank> planks = new List<Plank>();
     private static List<Line2D> lines = new List<Line2D>();
     public Position2D left, right;
@@ -29,6 +34,56 @@ public class Plank : RigidBody2D
             lines[i].QueueFree();
         }
         lines.Clear();
+    }
+
+    private bool collidesWithPlayer = true;
+    public override void _PhysicsProcess(float delta)
+    {
+        // Enable and disable collision with the player
+        if(playerNode!=null)
+        {
+            Vector2 l = left.GetGlobalPosition();
+            Vector2 r = right.GetGlobalPosition();
+
+            // First, check if we're horizontal
+            Vector2 dir = r - l;
+            dir = dir / dir.DistanceTo(Vector2.Zero); // normalize the direction vector
+
+            if(Math.Abs(dir.Dot(Vector2.Up)) < (PLAYER_WALK_ANGLE / 90))
+            {
+                // Check if the player is above us
+                Node2D p2D = (Node2D)playerNode;
+                Vector2 p = p2D.GetGlobalPosition();
+                float m = ((r.y - l.y) / (r.x - l.x));
+                float b = l.y - (l.x * m);
+                float y = (m * p.x) + b;
+
+                if(p.y < (y + 2f))
+                {
+                    if(!collidesWithPlayer) 
+                    {
+                        collidesWithPlayer = true;
+                        RemoveCollisionExceptionWith(playerNode);
+                        SetMode(RigidBody2D.ModeEnum.Kinematic);
+                    }
+                    return;
+                }
+
+                // Set color based on angle
+                Modulate = new Color(0.25f, 0.25f, 0.25f);
+            }
+            else
+            {
+                Modulate = new Color(1,1,1);
+            }
+
+            if(collidesWithPlayer)
+            {
+                collidesWithPlayer = false;
+                AddCollisionExceptionWith(playerNode);
+                SetMode(RigidBody2D.ModeEnum.Rigid);
+            }
+        }
     }
 
     void DrawLine(Vector2 l, Vector2 r)
@@ -54,6 +109,12 @@ public class Plank : RigidBody2D
             }
 
             otherPlank = planks[i];
+
+            if(otherPlank == null)
+            {
+                continue;
+            }
+
             Vector2 overlap = Vector2.Zero;
             if(GetOverlapPoint(otherPlank, out overlap))
             {
