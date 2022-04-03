@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Sprites/Peng_Sheet.png" type="Texture" id=1]
+[ext_resource path="res://CharacterController.cs" type="Script" id=2]
 
 [sub_resource type="CapsuleShape2D" id=8]
 radius = 86.6667
@@ -55,14 +56,17 @@ animations = [ {
 } ]
 
 [node name="Player" type="KinematicBody2D"]
-position = Vector2( 8, 0 )
+collision_mask = 3
+collision/safe_margin = 0.3
+script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( -8, 0 )
+position = Vector2( 1.9, -39.6 )
 scale = Vector2( 0.3, 0.3 )
 shape = SubResource( 8 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 9.9, -39.6 )
 scale = Vector2( 0.3, 0.3 )
 frames = SubResource( 7 )
 animation = "Idle"

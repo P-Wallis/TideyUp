@@ -17,6 +17,10 @@ public class CharacterController : KinematicBody2D
         right,
     }
  
+    public CharacterController()
+    {
+        Plank.playerNode = this;
+    }
 
     public override void _Ready()
     {
@@ -27,14 +31,7 @@ public class CharacterController : KinematicBody2D
 
     public override void _PhysicsProcess(float delta)
     {
-        if (IsOnFloor())
-        {
-            velocity.y = gravity;
-        }
-        else
-        {
-            velocity.y += delta * gravity;
-        }
+        velocity.y += delta * gravity;
 
         if (Input.IsActionPressed("ui_left"))
         {
@@ -74,6 +71,6 @@ public class CharacterController : KinematicBody2D
 
     // The second parameter of "MoveAndSlide" is the normal pointing up.
     // In the case of a 2D platformer, in Godot, upward is negative y, which translates to -1 as a normal.
-    MoveAndSlide(velocity, new Vector2(0, -1));
+    velocity = MoveAndSlide(velocity, new Vector2(0, -1));
     }
 }
