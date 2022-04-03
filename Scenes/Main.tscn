@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Building/BuildingTest.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Sprites/Level.png" type="Texture" id=3]
 [ext_resource path="res://Building/House.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/Multiply.tres" type="Material" id=5]
 
 [sub_resource type="RectangleShape2D" id=9]
 extents = Vector2( 545.5, 18.5 )
@@ -36,8 +37,9 @@ position = Vector2( -1, 0 )
 shape = SubResource( 9 )
 
 [node name="Ground" type="Sprite" parent="Ground/CollisionShape2D"]
-position = Vector2( -385.5, -23 )
+position = Vector2( -252, -245 )
 texture = ExtResource( 3 )
+offset = Vector2( -133.5, 222 )
 region_enabled = true
 region_rect = Rect2( 0, 400, 825, 74.4843 )
 
@@ -53,3 +55,12 @@ position = Vector2( 524.012, 14 )
 scale = Vector2( 2.006, 3.299 )
 color = Color( 0.976471, 0.678431, 0.254902, 1 )
 polygon = PoolVector2Array( -2.49829, -0.606247, -522, -1, -522, 42, -2, 42 )
+
+[node name="Surface" type="Sprite" parent="."]
+material = ExtResource( 5 )
+position = Vector2( 511.25, 564 )
+scale = Vector2( 1.25273, 1 )
+z_index = 2
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 825.399, 205.278 )
