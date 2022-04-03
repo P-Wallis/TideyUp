@@ -41,14 +41,14 @@ position = Vector2( -252, -245 )
 texture = ExtResource( 3 )
 offset = Vector2( -133.5, 222 )
 region_enabled = true
-region_rect = Rect2( 0, 400, 825, 74.4843 )
+region_rect = Rect2( 0, 406, 825, 73 )
 
 [node name="Ground2" type="Sprite" parent="Ground/CollisionShape2D"]
-position = Vector2( 439.5, -23 )
+position = Vector2( 439, -23 )
 scale = Vector2( -1, 1 )
 texture = ExtResource( 3 )
 region_enabled = true
-region_rect = Rect2( 0, 400, 825, 74.4843 )
+region_rect = Rect2( 0, 406, 825, 73 )
 
 [node name="Polygon2D" type="Polygon2D" parent="Ground"]
 position = Vector2( 524.012, 14 )
@@ -67,7 +67,7 @@ region_rect = Rect2( 0, 0, 825.399, 205.278 )
 
 [node name="Deep" type="Sprite" parent="Surface"]
 material = ExtResource( 5 )
-position = Vector2( 1.39694, 174 )
+position = Vector2( 1.5965, 174 )
 texture = ExtResource( 3 )
 region_enabled = true
-region_rect = Rect2( 0, 212.595, 823.066, 183.117 )
+region_rect = Rect2( 0, 235, 823.066, 160.712 )
