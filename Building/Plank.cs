@@ -37,8 +37,8 @@ public class Plank : RigidBody2D
         // Enable and disable collision with the player
         if(playerNode!=null)
         {
-            Vector2 l = left.GetGlobalPosition();
-            Vector2 r = right.GetGlobalPosition();
+            Vector2 l = left.GlobalPosition;
+            Vector2 r = right.GlobalPosition;
 
             // First, check if we're horizontal
             Vector2 dir = r - l;
@@ -50,7 +50,7 @@ public class Plank : RigidBody2D
             {
                 // Check if the player is above us
                 Node2D p2D = (Node2D)playerNode;
-                Vector2 p = p2D.GetGlobalPosition();
+                Vector2 p = p2D.GlobalPosition;
                 float m = ((r.y - l.y) / (r.x - l.x));
                 float b = l.y - (l.x * m);
                 float y = (m * p.x) + b;
@@ -78,7 +78,7 @@ public class Plank : RigidBody2D
                         {
                             collidesWithPlayer = true;
                             RemoveCollisionExceptionWith(playerNode);
-                            SetMode(RigidBody2D.ModeEnum.Kinematic);
+                            Mode = RigidBody2D.ModeEnum.Kinematic;
                         }
                         return;
                     }
@@ -93,7 +93,7 @@ public class Plank : RigidBody2D
             {
                 collidesWithPlayer = false;
                 AddCollisionExceptionWith(playerNode);
-                SetMode(RigidBody2D.ModeEnum.Rigid);
+                Mode = RigidBody2D.ModeEnum.Rigid;
             }
         }
     }
@@ -122,10 +122,10 @@ public class Plank : RigidBody2D
                 Node parent = this.GetParent();
                 PinJoint2D pin = new PinJoint2D();
                 parent.AddChild(pin);
-                pin.SetGlobalPosition(overlap);
-                pin.SetSoftness(PIN_SOFTNESS);
-                pin.SetNodeA(this.GetPath());
-                pin.SetNodeB(otherPlank.GetPath());
+                pin.GlobalPosition = overlap;
+                pin.Softness = PIN_SOFTNESS;
+                pin.NodeA = this.GetPath();
+                pin.NodeB = otherPlank.GetPath();
 
                 currentConnections++;
                 if(currentConnections >= MAX_CONNECTIONS)
@@ -138,10 +138,10 @@ public class Plank : RigidBody2D
 
     private bool GetOverlapPoint(Plank otherPlank, out Vector2 overlapPoint)
     {
-        Vector2 mL  = left.GetGlobalPosition();
-        Vector2 mR = right.GetGlobalPosition();
-        Vector2 oL  = otherPlank.left.GetGlobalPosition();
-        Vector2 oR = otherPlank.right.GetGlobalPosition();
+        Vector2 mL  = left.GlobalPosition;
+        Vector2 mR = right.GlobalPosition;
+        Vector2 oL  = otherPlank.left.GlobalPosition;
+        Vector2 oR = otherPlank.right.GlobalPosition;
 
         float d = ((mL.x - mR.x) * (oL.y - oR.y)) - ((mL.y - mR.y) * (oL.x - oR.x));
         float t = ((mL.x - oL.x) * (oL.y - oR.y)) - ((mL.y - oL.y) * (oL.x - oR.x));
