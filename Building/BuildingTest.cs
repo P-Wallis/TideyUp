@@ -12,7 +12,7 @@ public class BuildingTest : BuildingBase
         {
             if(eventMouseButton.IsPressed())
             {
-                InstantiateRandomlyRotatedPlankAtPosition(eventMouseButton.Position);
+                InstantiateRandomlyRotatedPlankAtPosition(GetGlobalMousePosition());
             }
         }
     }
@@ -21,7 +21,7 @@ public class BuildingTest : BuildingBase
     {
         Plank plank = PlankScene.Instance() as Plank;
         AddChild(plank);
-        plank.SetPosition(position);
+        plank.SetGlobalPosition(position);
         plank.SetRotationDegrees(Random.Range(-12,12) * 30);
         plank.ConnectToOtherPlanks();
     }
