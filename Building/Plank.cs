@@ -193,4 +193,23 @@ public class Plank : RigidBody2D
 
         return true;
     }
+
+    private bool IsUnderWater()
+    {
+        return Water._.IsUnderWater(left.GlobalPosition.y) && 
+            Water._.IsUnderWater(right.GlobalPosition.y);
+        
+    }
+    public static bool AreAllPlanksUnderWater()
+    {
+        for(int i=0; i<planks.Count; i++)
+        {
+            if(!planks[i].IsUnderWater())
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
