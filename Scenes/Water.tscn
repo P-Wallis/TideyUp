@@ -6,17 +6,17 @@
 
 [node name="Water" type="Sprite"]
 material = ExtResource( 2 )
-position = Vector2( 63.0001, 92 )
 scale = Vector2( 1.25273, 1 )
 z_index = 2
 texture = ExtResource( 1 )
+offset = Vector2( 0, 87.639 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 825.399, 205.278 )
 script = ExtResource( 3 )
 
 [node name="Deep" type="Sprite" parent="."]
 material = ExtResource( 2 )
-position = Vector2( 1.59646, 101 )
+position = Vector2( 1.596, 188.639 )
 texture = ExtResource( 1 )
 centered = false
 offset = Vector2( -412, 0 )

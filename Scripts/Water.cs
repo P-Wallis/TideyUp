@@ -3,6 +3,8 @@ using System;
 
 public class Water : Sprite
 {
+    public static Water _;
+    
     const float DEEP_WATER_UNSCALED_HEIGHT = 160;
     const float SURFACE_WATER_HEIGHT = 160;
     Sprite deepWater;
@@ -11,6 +13,11 @@ public class Water : Sprite
     {
         deepWater = GetNode<Sprite>("Deep");
         startPosition = GlobalPosition;
+
+        if(_ == null)
+        {
+            _ = this;
+        }
     }
 
     private float depth = 0;
@@ -30,12 +37,13 @@ public class Water : Sprite
         return globalYPosition > (startPosition.y - depth);
     }
 
+[Export] float waterFillSpeed = 10;
 float time = 0;
 //  // Called every frame. 'delta' is the elapsed time since the previous frame.
  public override void _Process(float delta)
  {
      time += delta;
 
-     SetWaterDepth(time * 10);
+     SetWaterDepth(time * waterFillSpeed);
  }
 }

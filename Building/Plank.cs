@@ -34,6 +34,21 @@ public class Plank : RigidBody2D
     private bool collidesWithPlayer = true;
     public override void _PhysicsProcess(float delta)
     {
+        bool underLeft = Water._.IsUnderWater(left.GlobalPosition.y);
+        bool underRight = Water._.IsUnderWater(right.GlobalPosition.y);
+        if(underLeft && underRight)
+        {
+            Modulate = new Color(0.25f, 0.25f, 1f);
+        }
+        else if(underLeft != underRight)
+        {
+            Modulate = new Color(0.7f, 0.7f, 1f);
+        }
+        else
+        {
+            Modulate = new Color(1, 1, 1);
+        }
+
         // Enable and disable collision with the player
         if(playerNode!=null)
         {
@@ -44,7 +59,7 @@ public class Plank : RigidBody2D
             Vector2 dir = r - l;
             dir = dir / dir.DistanceTo(Vector2.Zero); // normalize the direction vector
 
-            Modulate = new Color(0.25f, 0.25f, 0.25f);
+            //Modulate = new Color(0.25f, 0.25f, 0.25f);
 
             if(Math.Abs(dir.Dot(Vector2.Up)) < (PLAYER_WALK_ANGLE / 90))
             {
@@ -86,7 +101,7 @@ public class Plank : RigidBody2D
             }
             else
             {
-                Modulate = new Color(1,1,1);
+                //Modulate = new Color(1,1,1);
             }
 
             if(collidesWithPlayer)

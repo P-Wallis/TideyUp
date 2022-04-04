@@ -57,4 +57,6 @@ color = Color( 0.976471, 0.678431, 0.254902, 1 )
 polygon = PoolVector2Array( -2.49829, -0.606247, -522, -1, -522, 42, -2, 42 )
 
 [node name="Water" parent="." instance=ExtResource( 5 )]
-position = Vector2( 513, 703 )
+position = Vector2( 513, 612 )
+scale = Vector2( 1.265, 1 )
+waterFillSpeed = 3.0
