@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://icon.png" type="Texture" id=1]
 [ext_resource path="res://Building/Plank.cs" type="Script" id=2]
+[ext_resource path="res://Shaders/FloorTile.tres" type="Material" id=3]
+[ext_resource path="res://Sprites/Floor.png" type="Texture" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 160, 8 )
@@ -15,9 +16,10 @@ script = ExtResource( 2 )
 shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
-show_behind_parent = true
-scale = Vector2( 5, 0.25 )
-texture = ExtResource( 1 )
+material = ExtResource( 3 )
+position = Vector2( -5.72205e-06, 2.38419e-07 )
+scale = Vector2( 4.50704, 0.727273 )
+texture = ExtResource( 4 )
 
 [node name="RightHandle" type="Position2D" parent="."]
 position = Vector2( 160, 0 )
