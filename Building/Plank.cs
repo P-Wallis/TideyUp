@@ -31,7 +31,7 @@ public class Plank : RigidBody2D
         right = GetNode<Position2D>("RightHandle");
     }
 
-    private bool collidesWithPlayer = true;
+    public bool collidesWithPlayer = true;
     public override void _PhysicsProcess(float delta)
     {
         bool underLeft = Water._.IsUnderWater(left.GlobalPosition.y);

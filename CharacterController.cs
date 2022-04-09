@@ -10,6 +10,8 @@ public class CharacterController : KinematicBody2D
 	public float spriteScale = .3f;
 	Vector2 velocity;
 	public AnimatedSprite _animatedSprite;
+	public bool isJumping = false;
+	public Timer coyoteTime;
 	public Directions direction = Directions.right;
 	public enum Directions
 	{
@@ -27,12 +29,19 @@ public class CharacterController : KinematicBody2D
 		base._Ready();
 
 		_animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
-	}
+        coyoteTime = new Timer();
+        coyoteTime.OneShot = true;
+        coyoteTime.WaitTime = .5f;
+        AddChild(coyoteTime);
+
+    }
 
 	public override void _PhysicsProcess(float delta)
 	{
-		velocity.y += delta * gravity;
-
+		if(coyoteTime.IsStopped())
+        {
+			velocity.y += delta * gravity;
+		}
 		if (Input.IsActionPressed("ui_left"))
 		{
 			if (direction == Directions.right)
@@ -60,17 +69,26 @@ public class CharacterController : KinematicBody2D
 		}
 
 		// Jumping.
-		if (IsOnFloor() && Input.IsActionPressed("ui_select"))
+		if (IsOnFloor() || !coyoteTime.IsStopped())
 		{
-			velocity.y += JumpImpulse;
-			_animatedSprite.Play("Jump");
+			isJumping = false;
+			if(Input.IsActionJustPressed("ui_up"))
+            {
+					isJumping = true;
+					coyoteTime.Stop();
+					_animatedSprite.Play("Jump");
+					velocity.y += JumpImpulse;
+				
+			}
 		}
+	
+		bool wasOnFloor = IsOnFloor();
+		velocity = MoveAndSlide(velocity, new Vector2(0, -1));
+		if(!IsOnFloor() && wasOnFloor && !isJumping)
+        {
+			coyoteTime.Start();
+			velocity.y = 0;
 
-		// ...
-	// We don't need to multiply velocity by delta because "MoveAndSlide" already takes delta time into account.
-
-	// The second parameter of "MoveAndSlide" is the normal pointing up.
-	// In the case of a 2D platformer, in Godot, upward is negative y, which translates to -1 as a normal.
-	velocity = MoveAndSlide(velocity, new Vector2(0, -1));
+        }
 	}
 }
