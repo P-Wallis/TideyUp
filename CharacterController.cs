@@ -5,7 +5,8 @@ public class CharacterController : KinematicBody2D
 {
 	const float gravity = 200.0f;
 	const int walkSpeed = 200;
-    private const float maxPickupDistance = 50f;
+    [Export]
+	private float maxPickupDistance = 50f;
     [Export]
 	public int JumpImpulse =  -400;
 	public float spriteScale = .3f;
