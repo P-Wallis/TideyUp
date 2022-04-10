@@ -100,6 +100,8 @@ public class CharacterController : KinematicBody2D
 
         }
         //picking up items
+        
+
         if (Input.IsActionJustPressed("ui_accept"))
 		{
 			switch (state)
@@ -108,7 +110,7 @@ public class CharacterController : KinematicBody2D
 					Plank closestPlank = Plank.GetClosestPlankToPlayer();
 					if (closestPlank != null && closestPlank.distance < maxPickupDistance)
 					{
-						closestPlank.Hide();
+						closestPlank.Destroy();
 						this.GetNode<Sprite>("PlankSprite").Show();
 						state = StateMachine.holdingPlank;
 					}

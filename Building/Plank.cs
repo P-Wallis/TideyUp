@@ -19,6 +19,7 @@ public class Plank : RigidBody2D
     public Position2D left, right;
 
     private int plankIndex = -1;
+    private List<PlankConnection> connections = new List<PlankConnection>();
 
     public Plank()
     {
@@ -143,11 +144,51 @@ public class Plank : RigidBody2D
                 pin.NodeA = this.GetPath();
                 pin.NodeB = otherPlank.GetPath();
 
+                PlankConnection pc = new PlankConnection();
+                pc.plankA = this;
+                pc.plankB = otherPlank;
+                pc.pin = pin;
+
+                connections.Add(pc);
+                otherPlank.connections.Add(pc);
+
                 currentConnections++;
                 if(currentConnections >= MAX_CONNECTIONS)
                 {
                     break;
                 }
+            }
+        }
+    }
+    public void Destroy()
+    {
+        planks[plankIndex] = null;
+        foreach(PlankConnection pc in connections)
+        {
+            pc.pin.Free();
+            if(pc.plankA.plankIndex != plankIndex)
+            {
+                pc.plankA.RemoveAllConnectionsWith(plankIndex);
+            }
+            else
+            {
+                pc.plankB.RemoveAllConnectionsWith(plankIndex);
+            }
+        }
+        connections.Clear();
+        Free();
+    }
+
+    private void RemoveAllConnectionsWith(int index)
+    {
+        PlankConnection pc;
+        for(int i=0; i<connections.Count; i++)
+        {
+            pc = connections[i];
+            if(pc.plankA.plankIndex == index || pc.plankB.plankIndex == index)
+            {
+                connections.RemoveAt(i);
+                i--;
             }
         }
     }
@@ -203,9 +244,14 @@ public class Plank : RigidBody2D
     }
     public static bool AreAllPlanksUnderWater()
     {
-        for(int i=0; i<planks.Count; i++)
+        foreach (Plank plank in planks)
         {
-            if(!planks[i].IsUnderWater())
+            if(plank == null)
+            {
+                continue;
+            }
+
+            if(!plank.IsUnderWater())
             {
                 return false;
             }
@@ -222,7 +268,7 @@ public class Plank : RigidBody2D
             {
                 smallestDistancePlank = plank;
             }
-            else if(plank!= null)
+            else if(plank != null)
             {
                 if (plank.distance < smallestDistancePlank.distance)
                 {
