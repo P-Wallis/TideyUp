@@ -5,7 +5,8 @@ public class CharacterController : KinematicBody2D
 {
 	const float gravity = 200.0f;
 	const int walkSpeed = 200;
-	[Export]
+    private const float maxPickupDistance = 50f;
+    [Export]
 	public int JumpImpulse =  -400;
 	public float spriteScale = .3f;
 	Vector2 velocity;
@@ -18,6 +19,13 @@ public class CharacterController : KinematicBody2D
 		left,
 		right,
 	}
+	public StateMachine state = StateMachine.holdingNothing;
+	public enum StateMachine
+    {
+		holdingPlank,
+		holdingNothing,
+		building,
+    }
 
 	public CharacterController()
 	{
@@ -89,6 +97,22 @@ public class CharacterController : KinematicBody2D
 			coyoteTime.Start();
 			velocity.y = 0;
 
+        }
+        //picking up items
+        if (Input.IsActionJustPressed("ui_accept"))
+		{
+			switch (state)
+			{
+                case StateMachine.holdingNothing:
+					Plank closestPlank = Plank.GetClosestPlankToPlayer();
+					if (closestPlank != null && closestPlank.distance < maxPickupDistance)
+					{
+						closestPlank.Hide();
+						this.GetNode<Sprite>("PlankSprite").Show();
+						state = StateMachine.holdingPlank;
+					}
+				break;
+			}
         }
 	}
 }

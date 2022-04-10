@@ -9,11 +9,12 @@ public class Plank : RigidBody2D
     private const float PIN_SOFTNESS = 1;
     private const float PLAYER_WALK_ANGLE = 30; // in degrees
     private const float PLAYER_WALK_DISTANCE = 10;
-
+    
 
     public static Node playerNode;
 
     private static List<Plank> planks = new List<Plank>();
+    public float distance = float.MaxValue;
 
     public Position2D left, right;
 
@@ -54,6 +55,24 @@ public class Plank : RigidBody2D
         {
             Vector2 l = left.GlobalPosition;
             Vector2 r = right.GlobalPosition;
+            //distance calculation section
+            Node2D p2D = (Node2D)playerNode;
+            Vector2 p = p2D.GlobalPosition;
+            float m = ((r.y - l.y) / (r.x - l.x));
+            float b = l.y - (l.x * m);
+            float y = (m * p.x) + b;
+            distance = float.MaxValue;
+            float l_to_p = (r - l).Dot(p - l);
+            float r_to_p = (l - r).Dot(p - r);
+
+            if (l_to_p < 0 || r_to_p < 0)
+            {
+                distance = Math.Min(l.DistanceTo(p), r.DistanceTo(p));
+            }
+            else
+            {
+                distance = Math.Abs(y - p.y) / (float)Math.Sqrt((double)(m * m + 1));
+            }
 
             // First, check if we're horizontal
             Vector2 dir = r - l;
@@ -64,28 +83,10 @@ public class Plank : RigidBody2D
             if(Math.Abs(dir.Dot(Vector2.Up)) < (PLAYER_WALK_ANGLE / 90))
             {
                 // Check if the player is above us
-                Node2D p2D = (Node2D)playerNode;
-                Vector2 p = p2D.GlobalPosition;
-                float m = ((r.y - l.y) / (r.x - l.x));
-                float b = l.y - (l.x * m);
-                float y = (m * p.x) + b;
-
+               
                 if(p.y < (y + 2f))
                 {
                     // check if the player is close
-                    float distance = float.MaxValue;
-                    float l_to_p = (r-l).Dot(p-l);
-                    float r_to_p = (l-r).Dot(p-r);
-
-                    if(l_to_p < 0 || r_to_p < 0)
-                    {
-                        distance = Math.Min(l.DistanceTo(p), r.DistanceTo(p));
-                    }
-                    else
-                    {
-                        distance = Math.Abs(y - p.y) / (float)Math.Sqrt((double)(m*m + 1));
-                    }
-
 
                     if(distance < PLAYER_WALK_DISTANCE)
                     {
@@ -211,5 +212,25 @@ public class Plank : RigidBody2D
         }
 
         return true;
+    }
+    public static Plank GetClosestPlankToPlayer()
+    {
+        Plank smallestDistancePlank = null;
+        foreach (Plank plank in planks)
+        {
+            if(smallestDistancePlank == null)
+            {
+                smallestDistancePlank = plank;
+            }
+            else if(plank!= null)
+            {
+                if (plank.distance < smallestDistancePlank.distance)
+                {
+                    smallestDistancePlank = plank;
+                }
+            }
+            
+        }
+        return smallestDistancePlank;
     }
 }
