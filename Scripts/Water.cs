@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using Random = TideyUp.Utils.Random;
 
 public class Water : Sprite
 {
@@ -9,6 +10,7 @@ public class Water : Sprite
     const float SURFACE_WATER_HEIGHT = 160;
     Sprite deepWater;
     Vector2 startPosition;
+	public Timer waveTimer;
     public override void _Ready()
     {
         deepWater = GetNode<Sprite>("Deep");
@@ -18,6 +20,16 @@ public class Water : Sprite
         {
             _ = this;
         }
+
+
+        waveWait = Random.Range(waveWaitMin, waveWaitMax);
+        isWave = false;
+		waveTimer = new Timer();
+		waveTimer.OneShot = true;
+		waveTimer.WaitTime = waveWait;
+        waveTimer.Connect("timeout" , this, nameof(OnTimerComplete));
+		AddChild(waveTimer);
+        waveTimer.Start();
     }
 
     private float depth = 0;
@@ -42,13 +54,37 @@ public class Water : Sprite
         return (startPosition.y - depth) - globalYPosition;
     }
 
-[Export] float waterFillSpeed = 10;
-float time = 0;
-//  // Called every frame. 'delta' is the elapsed time since the previous frame.
- public override void _Process(float delta)
- {
-     time += delta;
+    [Export(PropertyHint.Range, "0,10,")] float baseWaterFillSpeed = 0;
+    [Export(PropertyHint.Range, "0,10,")] float waterFillSpeedIncrement = 1;
+    [Export(PropertyHint.Range, "0,20,")] float waveWaterFillSpeed = 10;
+    [Export(PropertyHint.Range, "1,60,")] float waveWaitMin = 10;
+    [Export(PropertyHint.Range, "1,60,")] float waveWaitMax = 30;
+    [Export(PropertyHint.Range, "1,60,")] float waveDuration = 5;
 
-     SetWaterDepth(time * waterFillSpeed);
- }
+    private bool isWave = false;
+    private float waveWait;
+    private float waterFillSpeedIncrease = 0;
+
+    public void OnTimerComplete()
+    {
+        isWave = !isWave;
+
+        if(isWave)
+        {
+            waveTimer.WaitTime = waveDuration;
+        }
+        else
+        {
+            waterFillSpeedIncrease += waterFillSpeedIncrement;
+            waveWait = Random.Range(waveWaitMin, waveWaitMax);
+            waveTimer.WaitTime = waveWait;
+        }
+        waveTimer.Start();
+    }
+
+    public override void _Process(float delta)
+    {
+        float currentWaterFillSpeed = (isWave ? waveWaterFillSpeed : baseWaterFillSpeed) + waterFillSpeedIncrease;
+        SetWaterDepth(depth + (delta * currentWaterFillSpeed));
+    }
 }
