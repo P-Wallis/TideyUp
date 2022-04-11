@@ -9,13 +9,20 @@ public class CharacterController : KinematicBody2D
 	private float maxPickupDistance = 50f;
 	[Export]
 	public int JumpImpulse =  -400;
+	[Export]
+	private float minDustSpeed = 0.1f;
+	[Export]
+	private float minSplashSpeed = 0.1f;
 	public float spriteScale = .3f;
 	Vector2 velocity;
 	public AnimatedSprite _animatedSprite;
+    public CPUParticles2D dustParticles;
+     public CPUParticles2D splashParticles;
 	public bool isJumping = false;
 	public Timer coyoteTime;
 
     private Plank closestPlank = null;
+    bool wasUnderWater = false;
 	public Directions direction = Directions.right;
 	public enum Directions
 	{
@@ -40,12 +47,26 @@ public class CharacterController : KinematicBody2D
 		base._Ready();
 
 		_animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
+        dustParticles = GetNode<CPUParticles2D>("Dust");
+        splashParticles = GetNode<CPUParticles2D>("Splash");
 		coyoteTime = new Timer();
 		coyoteTime.OneShot = true;
 		coyoteTime.WaitTime = .5f;
 		AddChild(coyoteTime);
 
 	}
+
+    public override void _Process(float delta)
+    {
+        bool isUnderWater = Water._.IsUnderWater(GlobalPosition.y);
+        dustParticles.Emitting = !isUnderWater && IsOnFloor() && Math.Abs(velocity.x) > minDustSpeed;
+
+        if(isUnderWater && !wasUnderWater && Math.Abs(velocity.y) > minSplashSpeed)
+        {
+            splashParticles.Emitting = true;
+        }
+        wasUnderWater = isUnderWater;
+    }
 
 	public override void _PhysicsProcess(float delta)
 	{
@@ -99,10 +120,9 @@ public class CharacterController : KinematicBody2D
 		{
 			coyoteTime.Start();
 			//velocity.y = 0;
-
 		}
 
-        
+
 		//picking up items
         if(state == StateMachine.holdingNothing)
         {
