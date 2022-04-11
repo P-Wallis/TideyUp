@@ -34,7 +34,12 @@ public class Water : Sprite
 
     public bool IsUnderWater(float globalYPosition)
     {
-        return globalYPosition > (startPosition.y - depth);
+        return HeightAboveWater(globalYPosition) < 0;
+    }
+
+    public float HeightAboveWater(float globalYPosition)
+    {
+        return (startPosition.y - depth) - globalYPosition;
     }
 
 [Export] float waterFillSpeed = 10;

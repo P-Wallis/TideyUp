@@ -105,6 +105,7 @@ position = Vector2( 9.9, -39.6 )
 scale = Vector2( 0.3, 0.3 )
 frames = SubResource( 7 )
 animation = "Idle"
+frame = 1
 playing = true
 
 [node name="PlankSprite" type="Sprite" parent="."]
@@ -115,6 +116,7 @@ texture = ExtResource( 3 )
 [node name="Dust" type="CPUParticles2D" parent="."]
 show_behind_parent = true
 position = Vector2( 0, -15 )
+emitting = false
 amount = 20
 lifetime = 2.0
 local_coords = false
@@ -131,7 +133,9 @@ color_ramp = SubResource( 13 )
 [node name="Splash" type="CPUParticles2D" parent="."]
 show_behind_parent = true
 position = Vector2( 0, -25 )
+emitting = false
 amount = 100
+one_shot = true
 explosiveness = 0.73
 randomness = 0.7
 lifetime_randomness = 0.36
