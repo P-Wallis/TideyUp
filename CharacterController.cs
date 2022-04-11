@@ -14,6 +14,8 @@ public class CharacterController : KinematicBody2D
 	public AnimatedSprite _animatedSprite;
 	public bool isJumping = false;
 	public Timer coyoteTime;
+
+    private Plank closestPlank = null;
 	public Directions direction = Directions.right;
 	public enum Directions
 	{
@@ -96,19 +98,34 @@ public class CharacterController : KinematicBody2D
 		if(!IsOnFloor() && wasOnFloor && !isJumping)
 		{
 			coyoteTime.Start();
-			velocity.y = 0;
+			//velocity.y = 0;
 
 		}
+
+        
 		//picking up items
+        if(state == StateMachine.holdingNothing)
+        {
+            if(closestPlank!=null)
+            {
+                closestPlank.highlight.Hide();
+            }
+			closestPlank = Plank.GetClosestPlankToPlayer();
+            if (closestPlank != null && closestPlank.distance < maxPickupDistance)
+            {
+                closestPlank.highlight.Show();
+            }
+        }
+
 		if (Input.IsActionJustPressed("ui_accept"))
 		{
 			switch (state)
 			{
 				case StateMachine.holdingNothing:
-					Plank closestPlank = Plank.GetClosestPlankToPlayer();
 					if (closestPlank != null && closestPlank.distance < maxPickupDistance)
 					{
 						closestPlank.Destroy();
+                        closestPlank = null;
 						this.GetNode<Sprite>("PlankSprite").Show();
 						state = StateMachine.holdingPlank;
 					}

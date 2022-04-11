@@ -17,6 +17,7 @@ public class Plank : RigidBody2D
     public float distance = float.MaxValue;
 
     public Position2D left, right;
+    public Sprite highlight;
 
     private int plankIndex = -1;
     private List<PlankConnection> connections = new List<PlankConnection>();
@@ -31,6 +32,7 @@ public class Plank : RigidBody2D
     {
         left = GetNode<Position2D>("LeftHandle");
         right = GetNode<Position2D>("RightHandle");
+        highlight = GetNode<Sprite>("Highlight");
     }
 
     public bool collidesWithPlayer = true;
