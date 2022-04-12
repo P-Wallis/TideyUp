@@ -14,6 +14,7 @@ public class CharacterController : KinematicBody2D
 	[Export]
 	private float minSplashSpeed = 0.1f;
 	public float spriteScale = .3f;
+	private float rotationSnap = 15f;
 	Vector2 velocity;
 	public AnimatedSprite _animatedSprite;
     public CPUParticles2D dustParticles;
@@ -74,7 +75,7 @@ public class CharacterController : KinematicBody2D
 		{
 			velocity.y += delta * gravity;
 		}
-		if (Input.IsActionPressed("ui_left"))
+		if (Input.IsActionPressed("ui_left") && state != StateMachine.building)
 		{
 			if (direction == Directions.right)
 			{
@@ -84,7 +85,7 @@ public class CharacterController : KinematicBody2D
 			velocity.x = -walkSpeed;
 			_animatedSprite.Play("Run");
 		}
-		else if (Input.IsActionPressed("ui_right"))
+		else if (Input.IsActionPressed("ui_right") && state != StateMachine.building)
 		{
 			if (direction == Directions.left)
 			{
@@ -137,20 +138,44 @@ public class CharacterController : KinematicBody2D
             }
         }
 
-		if (Input.IsActionJustPressed("ui_accept"))
-		{
-			switch (state)
-			{
-				case StateMachine.holdingNothing:
-					if (closestPlank != null && closestPlank.distance < maxPickupDistance)
-					{
-						closestPlank.Destroy();
+        if (Input.IsActionJustPressed("ui_accept"))
+        {
+            switch (state)
+            {
+                case StateMachine.holdingNothing:
+                    if (closestPlank != null && closestPlank.distance < maxPickupDistance)
+                    {
+                        closestPlank.Destroy();
                         closestPlank = null;
-						this.GetNode<Sprite>("PlankSprite").Show();
-						state = StateMachine.holdingPlank;
-					}
-				break;
-			}
-		}
-	}
+                        this.GetNode<Sprite>("PlankSprite").Show();
+                        state = StateMachine.holdingPlank;
+                    }
+                    break;
+                case StateMachine.holdingPlank:
+                    state = StateMachine.building;
+					break;
+            }
+        }
+    }
+    public override void _Input(InputEvent inputEvent)
+    { //could not get this to work in physics process so I put it in input. Since process runs every frame the player state machine was getting stuck in one state or the other
+        if (state == StateMachine.building)
+        {
+            if (Input.IsActionPressed("ui_left"))
+            {
+               
+                this.GetNode<Sprite>("PlankSprite").RotationDegrees -= rotationSnap;
+            }
+            else if (Input.IsActionPressed("ui_right"))
+            {
+               
+                this.GetNode<Sprite>("PlankSprite").RotationDegrees += rotationSnap;
+            }
+            else if (Input.IsActionJustPressed("ui_accept"))
+            {
+                state = StateMachine.holdingNothing;
+            }
+        }
+
+    }
 }
