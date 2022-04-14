@@ -10,6 +10,7 @@
 extents = Vector2( 545.5, 18.5 )
 
 [node name="Main" type="Node2D"]
+position = Vector2( 1, 0 )
 
 [node name="BuildingTest" parent="." instance=ExtResource( 1 )]
 

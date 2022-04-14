@@ -9,7 +9,7 @@ public class Plank : RigidBody2D
     private const float PIN_SOFTNESS = 1;
     private const float PLAYER_WALK_ANGLE = 30; // in degrees
     private const float PLAYER_WALK_DISTANCE = 10;
-    
+
 
     public static Node playerNode;
 
@@ -39,7 +39,7 @@ public class Plank : RigidBody2D
     public override void _PhysicsProcess(float delta)
     {
         // Enable and disable collision with the player
-        if(playerNode!=null)
+        if (playerNode != null)
         {
             Vector2 l = left.GlobalPosition;
             Vector2 r = right.GlobalPosition;
@@ -68,17 +68,17 @@ public class Plank : RigidBody2D
 
             Modulate = new Color(0.5f, 0.5f, 0.5f);
 
-            if(Math.Abs(dir.Dot(Vector2.Up)) < (PLAYER_WALK_ANGLE / 90))
+            if (Math.Abs(dir.Dot(Vector2.Up)) < (PLAYER_WALK_ANGLE / 90))
             {
                 // Check if the player is above us
-               
-                if(p.y < (y + 2f))
+
+                if (p.y < (y + 2f))
                 {
                     // check if the player is close
 
-                    if(distance < PLAYER_WALK_DISTANCE)
+                    if (distance < PLAYER_WALK_DISTANCE)
                     {
-                        if(!collidesWithPlayer) 
+                        if (!collidesWithPlayer)
                         {
                             collidesWithPlayer = true;
                             RemoveCollisionExceptionWith(playerNode);
@@ -90,10 +90,10 @@ public class Plank : RigidBody2D
             }
             else
             {
-                Modulate = new Color(1,1,1);
+                Modulate = new Color(1, 1, 1);
             }
 
-            if(collidesWithPlayer)
+            if (collidesWithPlayer)
             {
                 collidesWithPlayer = false;
                 AddCollisionExceptionWith(playerNode);
@@ -106,22 +106,22 @@ public class Plank : RigidBody2D
     {
         Plank otherPlank;
         int currentConnections = 0;
-        for(int i=0; i<planks.Count; i++)
+        for (int i = 0; i < planks.Count; i++)
         {
-            if(plankIndex == i)
+            if (plankIndex == i)
             {
                 continue;
             }
 
             otherPlank = planks[i];
 
-            if(otherPlank == null)
+            if (otherPlank == null)
             {
                 continue;
             }
 
             Vector2 overlap = Vector2.Zero;
-            if(GetOverlapPoint(otherPlank, out overlap))
+            if (GetOverlapPoint(otherPlank, out overlap))
             {
                 Node parent = this.GetParent();
                 PinJoint2D pin = new PinJoint2D();
@@ -140,7 +140,7 @@ public class Plank : RigidBody2D
                 otherPlank.connections.Add(pc);
 
                 currentConnections++;
-                if(currentConnections >= MAX_CONNECTIONS)
+                if (currentConnections >= MAX_CONNECTIONS)
                 {
                     break;
                 }
@@ -150,10 +150,10 @@ public class Plank : RigidBody2D
     public void Destroy()
     {
         planks[plankIndex] = null;
-        foreach(PlankConnection pc in connections)
+        foreach (PlankConnection pc in connections)
         {
             pc.pin.Free();
-            if(pc.plankA.plankIndex != plankIndex)
+            if (pc.plankA.plankIndex != plankIndex)
             {
                 pc.plankA.RemoveAllConnectionsWith(plankIndex);
             }
@@ -169,10 +169,10 @@ public class Plank : RigidBody2D
     private void RemoveAllConnectionsWith(int index)
     {
         PlankConnection pc;
-        for(int i=0; i<connections.Count; i++)
+        for (int i = 0; i < connections.Count; i++)
         {
             pc = connections[i];
-            if(pc.plankA.plankIndex == index || pc.plankB.plankIndex == index)
+            if (pc.plankA.plankIndex == index || pc.plankB.plankIndex == index)
             {
                 connections.RemoveAt(i);
                 i--;
@@ -182,9 +182,9 @@ public class Plank : RigidBody2D
 
     private bool GetOverlapPoint(Plank otherPlank, out Vector2 overlapPoint)
     {
-        Vector2 mL  = left.GlobalPosition;
+        Vector2 mL = left.GlobalPosition;
         Vector2 mR = right.GlobalPosition;
-        Vector2 oL  = otherPlank.left.GlobalPosition;
+        Vector2 oL = otherPlank.left.GlobalPosition;
         Vector2 oR = otherPlank.right.GlobalPosition;
 
         float d = ((mL.x - mR.x) * (oL.y - oR.y)) - ((mL.y - mR.y) * (oL.x - oR.x));
@@ -192,12 +192,12 @@ public class Plank : RigidBody2D
         float u = ((mL.x - oL.x) * (mL.y - mR.y)) - ((mL.y - oL.y) * (mL.x - mR.x));
 
         bool noOverlap = false;
-        if(Math.Abs(d) > 0.0001f)
+        if (Math.Abs(d) > 0.0001f)
         {
-            t = t/d;
-            u = u/d;
+            t = t / d;
+            u = u / d;
 
-            if(t < 0 || t > 1 || u < 0 || u > 1)
+            if (t < 0 || t > 1 || u < 0 || u > 1)
             {
                 noOverlap = true;
             }
@@ -207,7 +207,7 @@ public class Plank : RigidBody2D
             noOverlap = true;
         }
 
-        if(noOverlap)
+        if (noOverlap)
         {
             overlapPoint = Vector2.Zero;
             return false;
@@ -225,20 +225,20 @@ public class Plank : RigidBody2D
 
     private bool IsUnderWater()
     {
-        return Water._.IsUnderWater(left.GlobalPosition.y) && 
+        return Water._.IsUnderWater(left.GlobalPosition.y) &&
             Water._.IsUnderWater(right.GlobalPosition.y);
-        
+
     }
     public static bool AreAllPlanksUnderWater()
     {
         foreach (Plank plank in planks)
         {
-            if(plank == null)
+            if (plank == null)
             {
                 continue;
             }
 
-            if(!plank.IsUnderWater())
+            if (!plank.IsUnderWater())
             {
                 return false;
             }
@@ -251,18 +251,18 @@ public class Plank : RigidBody2D
         Plank smallestDistancePlank = null;
         foreach (Plank plank in planks)
         {
-            if(smallestDistancePlank == null)
+            if (smallestDistancePlank == null)
             {
                 smallestDistancePlank = plank;
             }
-            else if(plank != null)
+            else if (plank != null)
             {
                 if (plank.distance < smallestDistancePlank.distance)
                 {
                     smallestDistancePlank = plank;
                 }
             }
-            
+
         }
         return smallestDistancePlank;
     }
