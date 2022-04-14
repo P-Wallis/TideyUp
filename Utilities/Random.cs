@@ -6,9 +6,10 @@ namespace TideyUp.Utils
     {
         private static RandomNumberGenerator rng = null;
         private static RandomNumberGenerator RNG
-        { 
-            get {
-                if(rng == null)
+        {
+            get
+            {
+                if (rng == null)
                 {
                     rng = new RandomNumberGenerator();
                     rng.Randomize();

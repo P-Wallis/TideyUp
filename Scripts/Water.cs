@@ -1,22 +1,21 @@
 using Godot;
-using System;
 using Random = TideyUp.Utils.Random;
 
 public class Water : Sprite
 {
     public static Water _;
-    
+
     const float DEEP_WATER_UNSCALED_HEIGHT = 160;
     const float SURFACE_WATER_HEIGHT = 160;
     Sprite deepWater;
     Vector2 startPosition;
-	public Timer waveTimer;
+    public Timer waveTimer;
     public override void _Ready()
     {
         deepWater = GetNode<Sprite>("Deep");
         startPosition = GlobalPosition;
 
-        if(_ == null)
+        if (_ == null)
         {
             _ = this;
         }
@@ -24,11 +23,11 @@ public class Water : Sprite
 
         waveWait = Random.Range(waveWaitMin, waveWaitMax);
         isWave = false;
-		waveTimer = new Timer();
-		waveTimer.OneShot = true;
-		waveTimer.WaitTime = waveWait;
-        waveTimer.Connect("timeout" , this, nameof(OnTimerComplete));
-		AddChild(waveTimer);
+        waveTimer = new Timer();
+        waveTimer.OneShot = true;
+        waveTimer.WaitTime = waveWait;
+        waveTimer.Connect("timeout", this, nameof(OnTimerComplete));
+        AddChild(waveTimer);
         waveTimer.Start();
     }
 
@@ -38,7 +37,7 @@ public class Water : Sprite
     {
         depth = newDepth;
         GlobalPosition = new Vector2(startPosition.x, startPosition.y - depth);
-        if(depth > SURFACE_WATER_HEIGHT)
+        if (depth > SURFACE_WATER_HEIGHT)
         {
             deepWater.Scale = new Vector2(1, (depth - SURFACE_WATER_HEIGHT) / DEEP_WATER_UNSCALED_HEIGHT);
         }
@@ -69,7 +68,7 @@ public class Water : Sprite
     {
         isWave = !isWave;
 
-        if(isWave)
+        if (isWave)
         {
             waveTimer.WaitTime = waveDuration;
         }
