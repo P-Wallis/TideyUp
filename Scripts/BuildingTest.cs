@@ -3,7 +3,7 @@ using Random = TideyUp.Utils.Random;
 
 public class BuildingTest : BuildingBase
 {
-	PackedScene PlankScene = GD.Load<PackedScene>("res://Building/Plank.tscn");
+	PackedScene PlankScene = GD.Load<PackedScene>("res://Scenes/Elements/Planks/Plank.tscn");
 
 	public override void _Input(InputEvent @event)
 	{

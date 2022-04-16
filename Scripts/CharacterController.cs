@@ -50,9 +50,9 @@ public class CharacterController : KinematicBody2D
     public State state = State.holdingNothing;
 
     private PlankSize plankSize = PlankSize.Medium;
-    PackedScene PlankScene = GD.Load<PackedScene>("res://Building/Plank.tscn");
-    PackedScene LargePlankScene = GD.Load<PackedScene>("res://Building/Plank_Big.tscn");
-    PackedScene SmallPlankScene = GD.Load<PackedScene>("res://Building/Plank_Small.tscn");
+    PackedScene PlankScene = GD.Load<PackedScene>("res://Scenes/Elements/Planks/Plank.tscn");
+    PackedScene LargePlankScene = GD.Load<PackedScene>("res://Scenes/Elements/Planks/Plank_Big.tscn");
+    PackedScene SmallPlankScene = GD.Load<PackedScene>("res://Scenes/Elements/Planks/Plank_Small.tscn");
 
     public CharacterController()
     {

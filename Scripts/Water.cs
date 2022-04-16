@@ -10,7 +10,7 @@ public class Water : Sprite
     Sprite deepWater;
     Vector2 startPosition;
     public Timer waveTimer;
-    PackedScene WarningScene = GD.Load<PackedScene>("res://Scenes/FloodWarning.tscn");
+    PackedScene WarningScene = GD.Load<PackedScene>("res://Scenes/Elements/FloodWarning.tscn");
 
     Sprite warning;
     public override void _Ready()
