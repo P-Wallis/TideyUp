@@ -79,11 +79,8 @@ public class CharacterController : KinematicBody2D
 
     public override void _PhysicsProcess(float delta)
     {
-        GD.Print(state);
-        if (coyoteTime.IsStopped())
-        {
-            velocity.y += delta * gravity;
-        }
+        velocity.y += delta * gravity;
+        
         if (Input.IsActionPressed(left) && state != StateMachine.building)
         {
             if (direction == Directions.right)
@@ -107,10 +104,13 @@ public class CharacterController : KinematicBody2D
         else
         {
             velocity.x = 0;
-            _animatedSprite.Play("Idle");
+            if(IsOnFloor())
+            {
+                _animatedSprite.Play("Idle");
+            }
         }
 
-        // Jumping.
+        // Jumping
         if (IsOnFloor() || !coyoteTime.IsStopped())
         {
             isJumping = false;
@@ -129,7 +129,6 @@ public class CharacterController : KinematicBody2D
         if (!IsOnFloor() && wasOnFloor && !isJumping)
         {
             coyoteTime.Start();
-            //velocity.y = 0;
         }
 
         switch (state)
