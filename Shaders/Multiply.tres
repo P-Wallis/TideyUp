@@ -78,6 +78,7 @@ source = 5
 input_name = "screen_uv"
 
 [sub_resource type="VisualShaderNodeTexture" id=11]
+source = 5
 texture = ExtResource( 1 )
 texture_type = 1
 
@@ -89,7 +90,6 @@ texture = ExtResource( 1 )
 [sub_resource type="VisualShader" id=2]
 code = "shader_type canvas_item;
 uniform sampler2D tex_vtx_4;
-uniform sampler2D tex_frg_9 : hint_albedo;
 
 
 
@@ -201,9 +201,11 @@ void fragment() {
 	vec3 n_out15p0 = vec3(n_out14p0, n_out17p0, n_in15p2);
 
 // Texture:9
-	vec4 tex_frg_9_read = texture(tex_frg_9, n_out15p0.xy);
-	vec3 n_out9p0 = tex_frg_9_read.rgb;
-	float n_out9p1 = tex_frg_9_read.a;
+	vec3 n_out9p0;
+	float n_out9p1;
+	{
+		vec4 _tex_read = vec4(0.0);
+	}
 
 // VectorOp:11
 	vec3 n_out11p0 = n_out6p0 * n_out9p0;

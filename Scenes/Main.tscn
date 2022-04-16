@@ -1,13 +1,22 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Building/BuildingTest.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Sprites/Level.png" type="Texture" id=3]
 [ext_resource path="res://Building/House.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/Water.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Sprites/Flood-Warning.png" type="Texture" id=6]
 
 [sub_resource type="RectangleShape2D" id=9]
 extents = Vector2( 545.5, 18.5 )
+
+[sub_resource type="DynamicFontData" id=4]
+font_path = "res://UI/ITCKRIST.TTF"
+
+[sub_resource type="DynamicFont" id=10]
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 4 )
 
 [node name="Main" type="Node2D"]
 position = Vector2( 1, 0 )
@@ -59,3 +68,27 @@ polygon = PoolVector2Array( -2.49829, -0.606247, -522, -1, -522, 42, -2, 42 )
 
 [node name="Water" parent="." instance=ExtResource( 5 )]
 position = Vector2( 511, 616 )
+
+[node name="Control" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Instructions" type="RichTextLabel" parent="Control"]
+margin_left = 16.0
+margin_top = 25.0
+margin_right = 388.0
+margin_bottom = 226.0
+custom_colors/default_color = Color( 0, 0.180392, 0.231373, 1 )
+custom_fonts/normal_font = SubResource( 10 )
+text = "Move using the 'ARROW KEYS'
+Jump using 'SPACE' or 'UP'
+To build youu need to:
+- Pickup using 'E'
+- Then enter build mode with 'E'
+- Rotate planks using 'LEFT' and 'RIGHT'
+You can cancel any step using 'Q'"
+scroll_active = false
+
+[node name="Flood-Warning" type="Sprite" parent="Control"]
+position = Vector2( 958, 384 )
+texture = ExtResource( 6 )
