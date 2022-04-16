@@ -84,62 +84,13 @@ public class CharacterController : KinematicBody2D
 
     public override void _PhysicsProcess(float delta)
     {
-        velocity.y += delta * GRAVITY;
-        
-        if (Input.IsActionPressed(BUTTON_LEFT) && state != State.building)
-        {
-            if (direction == Direction.right)
-            {
-                direction = Direction.left;
-                animatedSprite.Scale = new Vector2(-SPRITE_SCALE, SPRITE_SCALE);
-            }
-            velocity.x = -WALK_SPEED;
-            animatedSprite.Play("Run");
-        }
-        else if (Input.IsActionPressed(BUTTON_RIGHT) && state != State.building)
-        {
-            if (direction == Direction.left)
-            {
-                direction = Direction.right;
-                animatedSprite.Scale = new Vector2(SPRITE_SCALE, SPRITE_SCALE);
-            }
-            velocity.x = WALK_SPEED;
-            animatedSprite.Play("Run");
-        }
-        else
-        {
-            velocity.x = 0;
-            if(IsOnFloor())
-            {
-                animatedSprite.Play("Idle");
-            }
-        }
-
-        // Jumping
-        if (IsOnFloor() || !coyoteTime.IsStopped())
-        {
-            isJumping = false;
-            if (Input.IsActionJustPressed(BUTTON_JUMP))
-            {
-                isJumping = true;
-                coyoteTime.Stop();
-                animatedSprite.Play("Jump");
-                velocity.y += JumpImpulse;
-
-            }
-        }
-
-        bool wasOnFloor = IsOnFloor();
-        velocity = MoveAndSlide(velocity, new Vector2(0, -1));
-        if (!IsOnFloor() && wasOnFloor && !isJumping)
-        {
-            coyoteTime.Start();
-        }
-
         switch (state)
         {
             case State.holdingNothing:
-                //highlights closest plank
+                HandleHorizontalInput();
+                HandleJumpInput();
+
+                //highlight closest plank
                 if (closestPlank != null)
                 {
                     closestPlank.highlight.Hide();
@@ -157,17 +108,36 @@ public class CharacterController : KinematicBody2D
                 {
                     closestPlank.Destroy();
                     closestPlank = null;
+                    plankAboveHead.RotationDegrees = 0;
                     plankAboveHead.Show();
                     state = State.holdingPlank;
                 }
                 break;
+
             case State.holdingPlank:
+                HandleHorizontalInput();
+                HandleJumpInput();
+
+                // Drop Plank
+                if (Input.IsActionJustPressed(BUTTON_CANCEL))
+                {
+                    CreatePlankAboveHead();
+                    state = State.holdingNothing;
+                }
+
+                // Build with Plank
                 if (Input.IsActionJustPressed(BUTTON_SELECT))
                 {
+                    animatedSprite.Play("Build");
                     state = State.building;
                 }
                 break;
+
             case State.building:
+                if (Input.IsActionJustPressed(BUTTON_CANCEL))
+                {
+                    state = State.holdingPlank;
+                }
                 if (Input.IsActionJustPressed(BUTTON_LEFT))
                 {
                     plankAboveHead.RotationDegrees -= ROTATION_SNAP;
@@ -178,15 +148,82 @@ public class CharacterController : KinematicBody2D
                 }
                 else if (Input.IsActionJustPressed(BUTTON_SELECT))
                 {
-                    Plank plank = PlankScene.Instance() as Plank;
-                    GetParent().AddChild(plank);
-                    plank.GlobalPosition = plankAboveHead.GlobalPosition;
-                    plank.RotationDegrees = plankAboveHead.RotationDegrees;
+                    Plank plank = CreatePlankAboveHead();
                     plank.ConnectToOtherPlanks();
-                    plankAboveHead.Hide();
                     state = State.holdingNothing;
                 }
                 break;
         }
+
+        // Move the character
+        velocity.y += delta * GRAVITY;
+        bool wasOnFloor = IsOnFloor();
+        velocity = MoveAndSlide(velocity, new Vector2(0, -1));
+        if (!IsOnFloor() && wasOnFloor && !isJumping)
+        {
+            coyoteTime.Start();
+        }
+    }
+
+    void HandleHorizontalInput()
+    {
+        if (Input.IsActionPressed(BUTTON_LEFT))
+        {
+            if (direction == Direction.right)
+            {
+                direction = Direction.left;
+                animatedSprite.Scale = new Vector2(-SPRITE_SCALE, SPRITE_SCALE);
+            }
+            velocity.x = -WALK_SPEED;
+            animatedSprite.Play("Run");
+        }
+        else if (Input.IsActionPressed(BUTTON_RIGHT))
+        {
+            if (direction == Direction.left)
+            {
+                direction = Direction.right;
+                animatedSprite.Scale = new Vector2(SPRITE_SCALE, SPRITE_SCALE);
+            }
+            velocity.x = WALK_SPEED;
+            animatedSprite.Play("Run");
+        }
+        else
+        {
+            velocity.x = 0;
+            if(IsOnFloor())
+            {
+                animatedSprite.Play("Idle");
+            }
+        }
+    }
+
+    void HandleJumpInput()
+    {
+        if (IsOnFloor() || !coyoteTime.IsStopped())
+        {
+            isJumping = false;
+            if (Input.IsActionJustPressed(BUTTON_JUMP))
+            {
+                isJumping = true;
+                coyoteTime.Stop();
+                animatedSprite.Play("Jump");
+                velocity.y += JumpImpulse;
+            }
+        }
+    }
+
+    Plank CreatePlankAboveHead(bool hideAboveHeadPlank = true)
+    {
+        Plank plank = PlankScene.Instance() as Plank;
+        GetParent().AddChild(plank);
+        plank.GlobalPosition = plankAboveHead.GlobalPosition;
+        plank.RotationDegrees = plankAboveHead.RotationDegrees;
+
+        if(hideAboveHeadPlank)
+        {
+            plankAboveHead.Hide();
+        }
+
+        return plank;
     }
 }
