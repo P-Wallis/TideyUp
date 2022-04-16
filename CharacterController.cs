@@ -134,6 +134,7 @@ public class CharacterController : KinematicBody2D
                 break;
 
             case State.building:
+                velocity.x = 0; //don't move in the building state
                 if (Input.IsActionJustPressed(BUTTON_CANCEL))
                 {
                     state = State.holdingPlank;
