@@ -25,7 +25,7 @@ public class Plank : RigidBody2D
 	public float distance = float.MaxValue;
 
 	public Position2D left, right;
-	public Sprite highlight;
+	public Sprite sprite, highlight;
 
 	private int plankIndex = -1;
 	private List<PlankConnection> connections = new List<PlankConnection>();
@@ -40,6 +40,7 @@ public class Plank : RigidBody2D
 	{
 		left = GetNode<Position2D>("LeftHandle");
 		right = GetNode<Position2D>("RightHandle");
+		sprite = GetNode<Sprite>("Sprite");
 		highlight = GetNode<Sprite>("Highlight");
 	}
 
@@ -74,7 +75,7 @@ public class Plank : RigidBody2D
 			Vector2 dir = r - l;
 			dir = dir / dir.DistanceTo(Vector2.Zero); // normalize the direction vector
 
-			Modulate = new Color(0.5f, 0.5f, 0.5f);
+			sprite.Modulate = new Color(0.5f, 0.5f, 0.5f);
 
 			if (Math.Abs(dir.Dot(Vector2.Up)) < (PLAYER_WALK_ANGLE / 90))
 			{
@@ -98,7 +99,7 @@ public class Plank : RigidBody2D
 			}
 			else
 			{
-				Modulate = new Color(1, 1, 1);
+				sprite.Modulate = new Color(1, 1, 1);
 			}
 
 			if (collidesWithPlayer)
