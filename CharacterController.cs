@@ -40,7 +40,7 @@ public class CharacterController : KinematicBody2D
     public AnimatedSprite animatedSprite;
     public CPUParticles2D dustParticles;
     public CPUParticles2D splashParticles;
-    public Sprite plankAboveHead;
+    public PlankPreview plankPreview;
     public bool isJumping = false;
     public Timer coyoteTime;
 
@@ -48,7 +48,11 @@ public class CharacterController : KinematicBody2D
     bool wasUnderWater = false;
     public Direction direction = Direction.right;
     public State state = State.holdingNothing;
+
+    private PlankSize plankSize = PlankSize.Medium;
     PackedScene PlankScene = GD.Load<PackedScene>("res://Building/Plank.tscn");
+    PackedScene LargePlankScene = GD.Load<PackedScene>("res://Building/Plank_Big.tscn");
+    PackedScene SmallPlankScene = GD.Load<PackedScene>("res://Building/Plank_Small.tscn");
 
     public CharacterController()
     {
@@ -62,7 +66,7 @@ public class CharacterController : KinematicBody2D
         animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
         dustParticles = GetNode<CPUParticles2D>("Dust");
         splashParticles = GetNode<CPUParticles2D>("Splash");
-        plankAboveHead = GetNode<Sprite>("PlankSprite");
+        plankPreview = GetNode<PlankPreview>("PlankPreview");
         coyoteTime = new Timer();
         coyoteTime.OneShot = true;
         coyoteTime.WaitTime = .5f;
@@ -106,10 +110,12 @@ public class CharacterController : KinematicBody2D
                     closestPlank != null &&
                     closestPlank.distance < maxPickupDistance)
                 {
+                    plankSize = closestPlank.size;
                     closestPlank.Destroy();
                     closestPlank = null;
-                    plankAboveHead.RotationDegrees = 0;
-                    plankAboveHead.Show();
+                    plankPreview.RotationDegrees = 0;
+                    plankPreview.SetSize(plankSize);
+                    plankPreview.Show();
                     state = State.holdingPlank;
                 }
                 break;
@@ -141,11 +147,11 @@ public class CharacterController : KinematicBody2D
                 }
                 if (Input.IsActionJustPressed(BUTTON_LEFT))
                 {
-                    plankAboveHead.RotationDegrees -= ROTATION_SNAP;
+                    plankPreview.RotationDegrees -= ROTATION_SNAP;
                 }
                 else if (Input.IsActionJustPressed(BUTTON_RIGHT))
                 {
-                    plankAboveHead.RotationDegrees += ROTATION_SNAP;
+                    plankPreview.RotationDegrees += ROTATION_SNAP;
                 }
                 else if (Input.IsActionJustPressed(BUTTON_SELECT))
                 {
@@ -215,14 +221,26 @@ public class CharacterController : KinematicBody2D
 
     Plank CreatePlankAboveHead(bool hideAboveHeadPlank = true)
     {
-        Plank plank = PlankScene.Instance() as Plank;
+        Plank plank;
+        switch(plankSize)
+        {
+            case PlankSize.Small:
+                plank = SmallPlankScene.Instance() as Plank;
+                break;
+            case PlankSize.Large:
+                plank = LargePlankScene.Instance() as Plank;
+                break;
+            default:
+                plank = PlankScene.Instance() as Plank;
+                break;
+        }
         GetParent().AddChild(plank);
-        plank.GlobalPosition = plankAboveHead.GlobalPosition;
-        plank.RotationDegrees = plankAboveHead.RotationDegrees;
+        plank.GlobalPosition = plankPreview.GlobalPosition;
+        plank.RotationDegrees = plankPreview.RotationDegrees;
 
         if(hideAboveHeadPlank)
         {
-            plankAboveHead.Hide();
+            plankPreview.Hide();
         }
 
         return plank;

@@ -2,6 +2,12 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+public enum PlankSize
+{
+	Small,
+	Medium,
+	Large
+}
 public class Plank : RigidBody2D
 {
 	public const string IS_SIGNAL = "IsPlank";
@@ -12,8 +18,10 @@ public class Plank : RigidBody2D
 
 
 	public static Node playerNode;
-
 	private static List<Plank> planks = new List<Plank>();
+
+	[Export] public PlankSize size = PlankSize.Medium; 
+
 	public float distance = float.MaxValue;
 
 	public Position2D left, right;
