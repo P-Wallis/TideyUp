@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Building/BuildingBase.cs" type="Script" id=1]
-[ext_resource path="res://Building/Plank_Big.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Building/Plank_Small.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Building/Plank.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scripts/BuildingBase.cs" type="Script" id=1]
+[ext_resource path="res://Scenes/Elements/Planks/Plank_Big.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Elements/Planks/Plank_Small.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Elements/Planks/Plank.tscn" type="PackedScene" id=4]
 
 [node name="House" type="Node2D"]
 script = ExtResource( 1 )
