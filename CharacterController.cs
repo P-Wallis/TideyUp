@@ -3,24 +3,41 @@ using System;
 
 public class CharacterController : KinematicBody2D
 {
-    const float gravity = 200.0f;
-    const int walkSpeed = 200;
-    const string accept = "ui_accept";
-    const string left = "ui_left";
-    const string right = "ui_right";
-    const string up = "ui_up";
-    [Export]
-    private float maxPickupDistance = 50f;
-    [Export]
-    public int JumpImpulse = -400;
-    [Export]
-    private float minDustSpeed = 0.1f;
-    [Export]
-    private float minSplashSpeed = 0.1f;
-    public float spriteScale = .3f;
-    private float rotationSnap = 15f;
+    // Enums
+    public enum State
+    {
+        holdingPlank,
+        holdingNothing,
+        building,
+    }
+
+    public enum Direction
+    {
+        left,
+        right,
+    }
+
+
+    // Constants
+    const float GRAVITY = 200.0f;
+    const float WALK_SPEED = 200;
+    const float SPRITE_SCALE = .3f;
+    const float ROTATION_SNAP = 15f;
+    const string BUTTON_SELECT = "select";
+    const string BUTTON_CANCEL = "cancel";
+    const string BUTTON_LEFT = "left";
+    const string BUTTON_RIGHT = "right";
+    const string BUTTON_JUMP = "jump";
+
+    // Inspector Variables
+    [Export] private float maxPickupDistance = 50f;
+    [Export] public float JumpImpulse = -400;
+    [Export] private float minDustSpeed = 0.1f;
+    [Export] private float minSplashSpeed = 0.1f;
+
+    // Class Variables
     Vector2 velocity;
-    public AnimatedSprite _animatedSprite;
+    public AnimatedSprite animatedSprite;
     public CPUParticles2D dustParticles;
     public CPUParticles2D splashParticles;
     public Sprite plankAboveHead;
@@ -29,32 +46,20 @@ public class CharacterController : KinematicBody2D
 
     private Plank closestPlank = null;
     bool wasUnderWater = false;
-    public Directions direction = Directions.right;
-    public enum Directions
-    {
-        left,
-        right,
-    }
-    public StateMachine state = StateMachine.holdingNothing;
-    public enum StateMachine
-    {
-        holdingPlank,
-        holdingNothing,
-        building,
-        finalize,
-    }
+    public Direction direction = Direction.right;
+    public State state = State.holdingNothing;
+    PackedScene PlankScene = GD.Load<PackedScene>("res://Building/Plank.tscn");
 
     public CharacterController()
     {
         Plank.playerNode = this;
     }
-    PackedScene PlankScene = GD.Load<PackedScene>("res://Building/Plank.tscn");
 
     public override void _Ready()
     {
         base._Ready();
 
-        _animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
+        animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
         dustParticles = GetNode<CPUParticles2D>("Dust");
         splashParticles = GetNode<CPUParticles2D>("Splash");
         plankAboveHead = GetNode<Sprite>("PlankSprite");
@@ -79,34 +84,34 @@ public class CharacterController : KinematicBody2D
 
     public override void _PhysicsProcess(float delta)
     {
-        velocity.y += delta * gravity;
+        velocity.y += delta * GRAVITY;
         
-        if (Input.IsActionPressed(left) && state != StateMachine.building)
+        if (Input.IsActionPressed(BUTTON_LEFT) && state != State.building)
         {
-            if (direction == Directions.right)
+            if (direction == Direction.right)
             {
-                direction = Directions.left;
-                _animatedSprite.Scale = new Vector2(-spriteScale, spriteScale);
+                direction = Direction.left;
+                animatedSprite.Scale = new Vector2(-SPRITE_SCALE, SPRITE_SCALE);
             }
-            velocity.x = -walkSpeed;
-            _animatedSprite.Play("Run");
+            velocity.x = -WALK_SPEED;
+            animatedSprite.Play("Run");
         }
-        else if (Input.IsActionPressed(right) && state != StateMachine.building)
+        else if (Input.IsActionPressed(BUTTON_RIGHT) && state != State.building)
         {
-            if (direction == Directions.left)
+            if (direction == Direction.left)
             {
-                direction = Directions.right;
-                _animatedSprite.Scale = new Vector2(spriteScale, spriteScale);
+                direction = Direction.right;
+                animatedSprite.Scale = new Vector2(SPRITE_SCALE, SPRITE_SCALE);
             }
-            velocity.x = walkSpeed;
-            _animatedSprite.Play("Run");
+            velocity.x = WALK_SPEED;
+            animatedSprite.Play("Run");
         }
         else
         {
             velocity.x = 0;
             if(IsOnFloor())
             {
-                _animatedSprite.Play("Idle");
+                animatedSprite.Play("Idle");
             }
         }
 
@@ -114,11 +119,11 @@ public class CharacterController : KinematicBody2D
         if (IsOnFloor() || !coyoteTime.IsStopped())
         {
             isJumping = false;
-            if (Input.IsActionJustPressed(up))
+            if (Input.IsActionJustPressed(BUTTON_JUMP))
             {
                 isJumping = true;
                 coyoteTime.Stop();
-                _animatedSprite.Play("Jump");
+                animatedSprite.Play("Jump");
                 velocity.y += JumpImpulse;
 
             }
@@ -133,7 +138,7 @@ public class CharacterController : KinematicBody2D
 
         switch (state)
         {
-            case StateMachine.holdingNothing:
+            case State.holdingNothing:
                 //highlights closest plank
                 if (closestPlank != null)
                 {
@@ -144,33 +149,34 @@ public class CharacterController : KinematicBody2D
                 {
                     closestPlank.highlight.Show();
                 }
+
                 //pick up plank
-                if (Input.IsActionJustPressed(accept) && closestPlank != null && closestPlank.distance < maxPickupDistance)
+                if (Input.IsActionJustPressed(BUTTON_SELECT) &&
+                    closestPlank != null &&
+                    closestPlank.distance < maxPickupDistance)
                 {
                     closestPlank.Destroy();
                     closestPlank = null;
                     plankAboveHead.Show();
-                    state = StateMachine.holdingPlank;
+                    state = State.holdingPlank;
                 }
                 break;
-            case StateMachine.holdingPlank:
-                if (Input.IsActionJustPressed(accept))
+            case State.holdingPlank:
+                if (Input.IsActionJustPressed(BUTTON_SELECT))
                 {
-                    state = StateMachine.building;
+                    state = State.building;
                 }
                 break;
-            case StateMachine.building:
-                if (Input.IsActionJustPressed(left))
+            case State.building:
+                if (Input.IsActionJustPressed(BUTTON_LEFT))
                 {
-
-                    plankAboveHead.RotationDegrees -= rotationSnap;
+                    plankAboveHead.RotationDegrees -= ROTATION_SNAP;
                 }
-                else if (Input.IsActionJustPressed(right))
+                else if (Input.IsActionJustPressed(BUTTON_RIGHT))
                 {
-
-                    plankAboveHead.RotationDegrees += rotationSnap;
+                    plankAboveHead.RotationDegrees += ROTATION_SNAP;
                 }
-                else if (Input.IsActionJustPressed(accept))
+                else if (Input.IsActionJustPressed(BUTTON_SELECT))
                 {
                     Plank plank = PlankScene.Instance() as Plank;
                     GetParent().AddChild(plank);
@@ -178,7 +184,7 @@ public class CharacterController : KinematicBody2D
                     plank.RotationDegrees = plankAboveHead.RotationDegrees;
                     plank.ConnectToOtherPlanks();
                     plankAboveHead.Hide();
-                    state = StateMachine.holdingNothing;
+                    state = State.holdingNothing;
                 }
                 break;
         }
