@@ -31,6 +31,10 @@ public class Plank : RigidBody2D
 	private int plankIndex = -1;
 	private List<PlankConnection> connections = new List<PlankConnection>();
 
+	public static void ClearPlankList()
+	{
+		planks.Clear();
+	}
 	public Plank()
 	{
 		AddUserSignal(IS_SIGNAL);

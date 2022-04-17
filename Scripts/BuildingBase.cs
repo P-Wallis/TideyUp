@@ -2,12 +2,16 @@ using Godot;
 
 public class BuildingBase : Node2D
 {
-
 	public override void _Ready()
 	{
 		base._Ready();
 
 		ConnectPlanksInChildrenRecursively(this);
+	}
+
+	public override void _ExitTree()
+	{
+		Plank.ClearPlankList();
 	}
 
 	void ConnectPlanksInChildrenRecursively(Node node)

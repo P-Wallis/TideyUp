@@ -34,6 +34,10 @@ public class Water : Sprite
 
         CallDeferred(nameof(AddWarningSprite));
     }
+	public override void _ExitTree()
+	{
+		_ = null;
+	}
 
     private void AddWarningSprite()
     {

@@ -88,6 +88,11 @@ public class CharacterController : KinematicBody2D
             splashParticles.Emitting = true;
         }
         wasUnderWater = isUnderWater;
+
+        if(Plank.AreAllPlanksUnderWater())
+        {
+            SceneManager._.LoadScene(SceneID.Outro);
+        }
     }
 
     public override void _PhysicsProcess(float delta)

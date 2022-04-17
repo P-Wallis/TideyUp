@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Sprites/Title-1.png" type="Texture" id=1]
 [ext_resource path="res://Sprites/Tile-2.png" type="Texture" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://Shaders/general-mult.tres" type="Material" id=8]
 [ext_resource path="res://Sprites/Pingo.png" type="Texture" id=9]
 [ext_resource path="res://Sprites/House.png" type="Texture" id=10]
+[ext_resource path="res://Scripts/PlayButton.cs" type="Script" id=11]
 
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.0313726, 0.207843, 0.254902, 1 )
@@ -81,20 +82,17 @@ position = Vector2( -631, -36 )
 texture = ExtResource( 5 )
 
 [node name="Play" type="Button" parent="."]
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -239.0
-margin_top = -200.0
-margin_right = -45.0
-margin_bottom = -133.0
+margin_left = 778.0
+margin_top = 397.0
+margin_right = 972.0
+margin_bottom = 464.0
 mouse_default_cursor_shape = 2
 custom_fonts/font = ExtResource( 7 )
 custom_styles/hover = SubResource( 2 )
 custom_styles/pressed = SubResource( 3 )
 custom_styles/normal = ExtResource( 6 )
 text = "PLAY"
+script = ExtResource( 11 )
 
 [node name="Instructions" type="RichTextLabel" parent="."]
 margin_left = 785.0
