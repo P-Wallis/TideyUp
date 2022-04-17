@@ -28,6 +28,10 @@ public class CharacterController : KinematicBody2D
     const string BUTTON_LEFT = "left";
     const string BUTTON_RIGHT = "right";
     const string BUTTON_JUMP = "jump";
+    private const string ANIM_RUN = "Run";
+    private const string ANIM_IDLE = "Idle";
+    private const string ANIM_JUMP = "Jump";
+    private const string ANIM_BUILD = "Build";
 
     // Inspector Variables
     [Export] private float maxPickupDistance = 50f;
@@ -134,7 +138,7 @@ public class CharacterController : KinematicBody2D
                 // Build with Plank
                 if (Input.IsActionJustPressed(BUTTON_SELECT))
                 {
-                    animatedSprite.Play("Build");
+                    animatedSprite.Play(ANIM_BUILD);
                     state = State.building;
                 }
                 break;
@@ -182,7 +186,10 @@ public class CharacterController : KinematicBody2D
                 animatedSprite.Scale = new Vector2(-SPRITE_SCALE, SPRITE_SCALE);
             }
             velocity.x = -WALK_SPEED;
-            animatedSprite.Play("Run");
+            if(IsOnFloor())
+            {
+                animatedSprite.Play(ANIM_RUN);
+            }
         }
         else if (Input.IsActionPressed(BUTTON_RIGHT))
         {
@@ -192,29 +199,41 @@ public class CharacterController : KinematicBody2D
                 animatedSprite.Scale = new Vector2(SPRITE_SCALE, SPRITE_SCALE);
             }
             velocity.x = WALK_SPEED;
-            animatedSprite.Play("Run");
+            if(IsOnFloor())
+            {
+                animatedSprite.Play(ANIM_RUN);
+            }
         }
         else
         {
             velocity.x = 0;
-            if(IsOnFloor())
+            if(IsOnFloor() || animatedSprite.Animation != ANIM_JUMP)
             {
-                animatedSprite.Play("Idle");
+                animatedSprite.Play(ANIM_IDLE);
             }
         }
     }
 
     void HandleJumpInput()
     {
-        if (IsOnFloor() || !coyoteTime.IsStopped())
+        if(!IsOnFloor())
+        {
+            animatedSprite.Play(ANIM_JUMP);
+        }
+
+        if ( Water._.IsUnderWater(GlobalPosition.y) || IsOnFloor() || !coyoteTime.IsStopped())
         {
             isJumping = false;
             if (Input.IsActionJustPressed(BUTTON_JUMP))
             {
                 isJumping = true;
                 coyoteTime.Stop();
-                animatedSprite.Play("Jump");
+                animatedSprite.Play(ANIM_JUMP);
                 velocity.y += JumpImpulse;
+                if(velocity.y < JumpImpulse)
+                {
+                    velocity.y = JumpImpulse;
+                }
             }
         }
     }
