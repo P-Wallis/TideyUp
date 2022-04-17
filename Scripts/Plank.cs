@@ -1,7 +1,14 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using Random = TideyUp.Utils.Random;
 
+public enum PlankSize
+{
+	Small,
+	Medium,
+	Large
+}
 public class Plank : RigidBody2D
 {
 	public const string IS_SIGNAL = "IsPlank";
@@ -12,16 +19,22 @@ public class Plank : RigidBody2D
 
 
 	public static Node playerNode;
-
 	private static List<Plank> planks = new List<Plank>();
+
+	[Export] public PlankSize size = PlankSize.Medium; 
+	private float density = 1;
 	public float distance = float.MaxValue;
 
 	public Position2D left, right;
-	public Sprite highlight;
+	public Sprite sprite, highlight;
 
 	private int plankIndex = -1;
 	private List<PlankConnection> connections = new List<PlankConnection>();
 
+	public static void ClearPlankList()
+	{
+		planks.Clear();
+	}
 	public Plank()
 	{
 		AddUserSignal(IS_SIGNAL);
@@ -30,14 +43,25 @@ public class Plank : RigidBody2D
 	}
 	public override void _Ready()
 	{
+		density *= Random.Range(0.5f, 2f);
+
 		left = GetNode<Position2D>("LeftHandle");
 		right = GetNode<Position2D>("RightHandle");
+		sprite = GetNode<Sprite>("Sprite");
 		highlight = GetNode<Sprite>("Highlight");
 	}
 
 	public bool collidesWithPlayer = true;
 	public override void _PhysicsProcess(float delta)
 	{
+		if(connections.Count < 3 && IsUnderWater())
+		{
+			// Do buoyancy!
+			float buoyancy = (Water._.HeightAboveWater(GlobalPosition.y) / density) * delta;
+			//buoyancy /= connections.Count + 1;
+			ApplyCentralImpulse(new Vector2(0, buoyancy));
+		}
+
 		// Enable and disable collision with the player
 		if (playerNode != null)
 		{
@@ -66,7 +90,7 @@ public class Plank : RigidBody2D
 			Vector2 dir = r - l;
 			dir = dir / dir.DistanceTo(Vector2.Zero); // normalize the direction vector
 
-			Modulate = new Color(0.5f, 0.5f, 0.5f);
+			sprite.Modulate = new Color(0.5f, 0.5f, 0.5f);
 
 			if (Math.Abs(dir.Dot(Vector2.Up)) < (PLAYER_WALK_ANGLE / 90))
 			{
@@ -90,7 +114,7 @@ public class Plank : RigidBody2D
 			}
 			else
 			{
-				Modulate = new Color(1, 1, 1);
+				sprite.Modulate = new Color(1, 1, 1);
 			}
 
 			if (collidesWithPlayer)

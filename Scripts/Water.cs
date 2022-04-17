@@ -10,6 +10,9 @@ public class Water : Sprite
     Sprite deepWater;
     Vector2 startPosition;
     public Timer waveTimer;
+    PackedScene WarningScene = GD.Load<PackedScene>("res://Scenes/Elements/FloodWarning.tscn");
+
+    Sprite warning;
     public override void _Ready()
     {
         deepWater = GetNode<Sprite>("Deep");
@@ -20,7 +23,6 @@ public class Water : Sprite
             _ = this;
         }
 
-
         waveWait = Random.Range(waveWaitMin, waveWaitMax);
         isWave = false;
         waveTimer = new Timer();
@@ -29,6 +31,19 @@ public class Water : Sprite
         waveTimer.Connect("timeout", this, nameof(OnTimerComplete));
         AddChild(waveTimer);
         waveTimer.Start();
+
+        CallDeferred(nameof(AddWarningSprite));
+    }
+	public override void _ExitTree()
+	{
+		_ = null;
+	}
+
+    private void AddWarningSprite()
+    {
+        warning = WarningScene.Instance() as Sprite;
+        GetParent().AddChild(warning);
+        warning.GlobalPosition = new Vector2(958, 384);
     }
 
     private float depth = 0;
