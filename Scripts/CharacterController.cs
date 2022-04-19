@@ -54,9 +54,6 @@ public class CharacterController : KinematicBody2D
     public State state = State.holdingNothing;
 
     private PlankSize plankSize = PlankSize.Medium;
-    PackedScene PlankScene = GD.Load<PackedScene>("res://Scenes/Elements/Planks/Plank.tscn");
-    PackedScene LargePlankScene = GD.Load<PackedScene>("res://Scenes/Elements/Planks/Plank_Big.tscn");
-    PackedScene SmallPlankScene = GD.Load<PackedScene>("res://Scenes/Elements/Planks/Plank_Small.tscn");
 
     public CharacterController()
     {
@@ -245,19 +242,7 @@ public class CharacterController : KinematicBody2D
 
     Plank CreatePlankAboveHead(bool hideAboveHeadPlank = true)
     {
-        Plank plank;
-        switch(plankSize)
-        {
-            case PlankSize.Small:
-                plank = SmallPlankScene.Instance() as Plank;
-                break;
-            case PlankSize.Large:
-                plank = LargePlankScene.Instance() as Plank;
-                break;
-            default:
-                plank = PlankScene.Instance() as Plank;
-                break;
-        }
+        Plank plank = Plank.InstantiatePlank(plankSize);
         GetParent().AddChild(plank);
         plank.GlobalPosition = plankPreview.GlobalPosition;
         plank.RotationDegrees = plankPreview.RotationDegrees;
