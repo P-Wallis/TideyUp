@@ -115,12 +115,12 @@ public class Water : Sprite
         if(Random.Value() > 0.5f) // Distribute left and right
         {
             pos.x += 900;
-            plank.ApplyCentralImpulse(new Vector2(Random.Range(-300,-10), 0));
+            plank.ApplyCentralImpulse(new Vector2(Random.Range(-300,-30), 0));
         }
         else
         {
             pos.x -= 900;
-            plank.ApplyCentralImpulse(new Vector2(Random.Range(300,10), 0));
+            plank.ApplyCentralImpulse(new Vector2(Random.Range(300,30), 0));
         }
         plank.GlobalPosition = pos;
         //plank.RotationDegrees = Random.Range(-30, 30);
