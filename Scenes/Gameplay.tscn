@@ -53,20 +53,23 @@ polygon = PoolVector2Array( -2.49829, -0.606247, -522, -1, -522, 42, -2, 42 )
 [node name="Plank Stack" type="Node2D" parent="."]
 
 [node name="BigPlank(RigidBody2D)" parent="Plank Stack" instance=ExtResource( 1 )]
+position = Vector2( 338, 520 )
+
+[node name="BigPlank(RigidBody2D)2" parent="Plank Stack" instance=ExtResource( 1 )]
 position = Vector2( 341, 536 )
 
 [node name="Plank(RigidBody2D)2" parent="Plank Stack" instance=ExtResource( 3 )]
-position = Vector2( 416, 520 )
+position = Vector2( 419, 504 )
 
 [node name="Plank(RigidBody2D)3" parent="Plank Stack" instance=ExtResource( 3 )]
-position = Vector2( 295, 489 )
+position = Vector2( 295, 473 )
 rotation = -0.414893
 
 [node name="Plank(RigidBody2D)4" parent="Plank Stack" instance=ExtResource( 3 )]
-position = Vector2( 410, 504 )
+position = Vector2( 410, 488 )
 
 [node name="SmallPlank(RigidBody2D)" parent="Plank Stack" instance=ExtResource( 2 )]
-position = Vector2( 375, 488 )
+position = Vector2( 375, 472 )
 
 [node name="House" parent="." instance=ExtResource( 5 )]
 position = Vector2( 642, 544 )
