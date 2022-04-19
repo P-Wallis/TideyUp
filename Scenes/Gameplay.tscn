@@ -86,7 +86,7 @@ limit_smoothed = true
 position = Vector2( 511, 616 )
 waterFillSpeedIncrement = 0.5
 waveWaterFillSpeed = 60.0
-waveWaitMin = 30.0
+waveWaitMin = 40.0
 waveWaitMax = 120.0
 waveDuration = 2.5
 

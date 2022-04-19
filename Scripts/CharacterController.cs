@@ -162,7 +162,6 @@ public class CharacterController : KinematicBody2D
                 else if (Input.IsActionJustPressed(BUTTON_SELECT))
                 {
                     Plank plank = CreatePlankAboveHead();
-                    plank.ConnectToOtherPlanks();
                     state = State.holdingNothing;
                 }
                 break;
@@ -246,6 +245,7 @@ public class CharacterController : KinematicBody2D
         GetParent().AddChild(plank);
         plank.GlobalPosition = plankPreview.GlobalPosition;
         plank.RotationDegrees = plankPreview.RotationDegrees;
+        plank.ConnectToOtherPlanks();
 
         if(hideAboveHeadPlank)
         {
