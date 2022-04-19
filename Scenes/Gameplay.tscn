@@ -85,9 +85,9 @@ limit_smoothed = true
 [node name="Water" parent="." instance=ExtResource( 4 )]
 position = Vector2( 511, 616 )
 waterFillSpeedIncrement = 0.5
-waveWaterFillSpeed = 20.0
+waveWaterFillSpeed = 60.0
 waveWaitMin = 30.0
-waveWaitMax = 60.0
+waveWaitMax = 120.0
 waveDuration = 2.5
 
 [node name="Control" type="Control" parent="."]
