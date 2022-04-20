@@ -1,10 +1,11 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Sprites/Peng_Sheet.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/CharacterController.cs" type="Script" id=2]
 [ext_resource path="res://Scenes/Elements/Planks/PlankPreview.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Sprites/Dust_Particle.png" type="Texture" id=4]
 [ext_resource path="res://Sounds/Splash.wav" type="AudioStream" id=5]
+[ext_resource path="res://Sounds/Jump/Jump-02.wav" type="AudioStream" id=6]
 
 [sub_resource type="CapsuleShape2D" id=8]
 radius = 86.6667
@@ -155,3 +156,6 @@ hue_variation_curve = SubResource( 16 )
 
 [node name="SplashSFX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
+
+[node name="JumpSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )

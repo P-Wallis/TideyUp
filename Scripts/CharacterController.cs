@@ -53,6 +53,7 @@ public class CharacterController : KinematicBody2D
     public bool isJumping = false;
     public Timer coyoteTime;
     public AudioStreamPlayer splashSound;
+    public AudioStreamPlayer jumpSound;
     private Plank closestPlank = null;
     bool wasUnderWater = false;
     public Direction direction = Direction.right;
@@ -81,6 +82,7 @@ public class CharacterController : KinematicBody2D
         coyoteTime.WaitTime = .5f;
         AddChild(coyoteTime);
         splashSound = GetNode<AudioStreamPlayer>("SplashSFX");
+        jumpSound = GetNode<AudioStreamPlayer>("JumpSFX");
     }
 
     public override void _Process(float delta)
@@ -257,6 +259,8 @@ public class CharacterController : KinematicBody2D
                 isJumping = true;
                 coyoteTime.Stop();
                 animatedSprite.Play(ANIM_JUMP);
+                jumpSound.PitchScale = Random.Range(0.95f, 1.1f);
+                jumpSound.Play();
                 velocity.y += JumpImpulse;
                 if(velocity.y < JumpImpulse)
                 {
