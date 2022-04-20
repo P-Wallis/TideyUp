@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using Random = TideyUp.Utils.Random;
 
 public class CharacterController : KinematicBody2D
 {
@@ -48,13 +49,13 @@ public class CharacterController : KinematicBody2D
     public bool isJumping = false;
     public Timer coyoteTime;
     public AudioStreamPlayer splashSound;
-
     private Plank closestPlank = null;
     bool wasUnderWater = false;
     public Direction direction = Direction.right;
     public State state = State.holdingNothing;
 
     private PlankSize plankSize = PlankSize.Medium;
+
 
     public CharacterController()
     {
@@ -73,10 +74,7 @@ public class CharacterController : KinematicBody2D
         coyoteTime.OneShot = true;
         coyoteTime.WaitTime = .5f;
         AddChild(coyoteTime);
-        splashSound = GetNode<AudioStreamPlayer>("AudioStreamPlayer");
-
-
-
+        splashSound = GetNode<AudioStreamPlayer>("SplashSFX");
     }
 
     public override void _Process(float delta)
@@ -87,6 +85,7 @@ public class CharacterController : KinematicBody2D
         if (isUnderWater && !wasUnderWater && Math.Abs(velocity.y) > minSplashSpeed)
         {
             splashParticles.Emitting = true;
+            splashSound.PitchScale = Random.Range(0.9f, 1.25f);
             splashSound.Play();
         }
         wasUnderWater = isUnderWater;
