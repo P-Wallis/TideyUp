@@ -11,5 +11,5 @@ dest_files=[ "res://.import/Hammer.ogg-bf3ee3f93ef61be6ab51e543ae588f2e.oggstr" 
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0
