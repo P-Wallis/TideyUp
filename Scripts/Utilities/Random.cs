@@ -31,5 +31,20 @@ namespace TideyUp.Utils
         {
             return RNG.Randf();
         }
+
+        public static Vector2 InsideUnitCircle()
+        {
+            float x, y;
+            while(true)
+            {
+                x = Range(-1f,1f);
+                y = Range(-1f,1f);
+
+                if((x * x) + (y * y) < 1f)
+                {
+                    return new Vector2(x,y);
+                }
+            }
+        }
     }
 }

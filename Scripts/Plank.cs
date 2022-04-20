@@ -18,6 +18,28 @@ public class Plank : RigidBody2D
 	private const float PLAYER_WALK_DISTANCE = 10;
 
 
+    static PackedScene PlankScene = GD.Load<PackedScene>("res://Scenes/Elements/Planks/Plank.tscn");
+    static PackedScene LargePlankScene = GD.Load<PackedScene>("res://Scenes/Elements/Planks/Plank_Big.tscn");
+    static PackedScene SmallPlankScene = GD.Load<PackedScene>("res://Scenes/Elements/Planks/Plank_Small.tscn");
+	public static Plank InstantiatePlank(PlankSize plankSize)
+	{
+		Plank plank = null;
+        switch(plankSize)
+        {
+            case PlankSize.Small:
+                plank = SmallPlankScene.Instance() as Plank;
+                break;
+            case PlankSize.Large:
+                plank = LargePlankScene.Instance() as Plank;
+                break;
+            default:
+                plank = PlankScene.Instance() as Plank;
+                break;
+        }
+		return plank;
+	}
+
+
 	public static Node playerNode;
 	private static List<Plank> planks = new List<Plank>();
 
