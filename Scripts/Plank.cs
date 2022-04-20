@@ -103,11 +103,11 @@ public class Plank : RigidBody2D
 
 				if (l_to_p < 0 || r_to_p < 0)
 				{
-					distance = Math.Min(l.DistanceTo(p), r.DistanceTo(p));
+					distance = Mathf.Min(l.DistanceTo(p), r.DistanceTo(p));
 				}
 				else
 				{
-					distance = Math.Abs(y - p.y) / (float)Math.Sqrt((double)(m * m + 1));
+					distance = Mathf.Abs(y - p.y) / Mathf.Sqrt((m * m + 1));
 				}
 
 				// First, check if we're horizontal
@@ -116,7 +116,7 @@ public class Plank : RigidBody2D
 
 				sprite.Modulate = new Color(0.5f, 0.5f, 0.5f);
 
-				if (Math.Abs(dir.Dot(Vector2.Up)) < (PLAYER_WALK_ANGLE / 90))
+				if (Mathf.Abs(dir.Dot(Vector2.Up)) < (PLAYER_WALK_ANGLE / 90))
 				{
 					// Check if the player is above us
 
@@ -241,7 +241,7 @@ public class Plank : RigidBody2D
 		float u = ((mL.x - oL.x) * (mL.y - mR.y)) - ((mL.y - oL.y) * (mL.x - mR.x));
 
 		bool noOverlap = false;
-		if (Math.Abs(d) > 0.0001f)
+		if (Mathf.Abs(d) > 0.0001f)
 		{
 			t = t / d;
 			u = u / d;
