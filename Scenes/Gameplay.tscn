@@ -114,6 +114,6 @@ To build you need to:
 You can cancel any step using 'Q'"
 scroll_active = false
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
 autoplay = true

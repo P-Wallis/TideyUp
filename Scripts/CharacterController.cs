@@ -24,11 +24,13 @@ public class CharacterController : KinematicBody2D
     const float WALK_SPEED = 200;
     const float SPRITE_SCALE = .3f;
     const float ROTATION_SNAP = 15f;
-    const string BUTTON_SELECT = "select";
-    const string BUTTON_CANCEL = "cancel";
-    const string BUTTON_LEFT = "left";
-    const string BUTTON_RIGHT = "right";
-    const string BUTTON_JUMP = "jump";
+    public const string BUTTON_SELECT = "select";
+    public const string BUTTON_CANCEL = "cancel";
+    public const string BUTTON_LEFT = "left";
+    public const string BUTTON_RIGHT = "right";
+    public const string BUTTON_JUMP = "jump";
+    public const string BUTTON_UP = "up";
+    public const string BUTTON_DOWN = "down";
     private const string ANIM_RUN = "Run";
     private const string ANIM_IDLE = "Idle";
     private const string ANIM_JUMP = "Jump";
@@ -102,7 +104,7 @@ public class CharacterController : KinematicBody2D
         {
             case State.holdingNothing:
                 HandleHorizontalInput();
-                HandleJumpInput();
+                HandleVerticalInput();
 
                 //highlight closest plank
                 if (closestPlank != null)
@@ -132,7 +134,7 @@ public class CharacterController : KinematicBody2D
 
             case State.holdingPlank:
                 HandleHorizontalInput();
-                HandleJumpInput();
+                HandleVerticalInput();
 
                 // Drop Plank
                 if (Input.IsActionJustPressed(BUTTON_CANCEL))
@@ -219,7 +221,7 @@ public class CharacterController : KinematicBody2D
         }
     }
 
-    void HandleJumpInput()
+    void HandleVerticalInput()
     {
         if(!IsOnFloor())
         {
@@ -239,6 +241,14 @@ public class CharacterController : KinematicBody2D
                 {
                     velocity.y = JumpImpulse;
                 }
+            }
+        }
+
+        if (Input.IsActionJustPressed(BUTTON_DOWN))
+        {
+            if(velocity.y < JumpImpulse*-0.5f)
+            {
+                velocity.y = JumpImpulse*-0.5f;
             }
         }
     }
