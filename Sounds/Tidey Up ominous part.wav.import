@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Tidey Up ominous part.wav-6778ef349362865495842f0c586ff9ef.sample"
+
+[deps]
+
+source_file="res://Sounds/Tidey Up ominous part.wav"
+dest_files=[ "res://.import/Tidey Up ominous part.wav-6778ef349362865495842f0c586ff9ef.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

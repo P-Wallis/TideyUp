@@ -47,6 +47,7 @@ public class CharacterController : KinematicBody2D
     public PlankPreview plankPreview;
     public bool isJumping = false;
     public Timer coyoteTime;
+    public AudioStreamPlayer splashSound;
 
     private Plank closestPlank = null;
     bool wasUnderWater = false;
@@ -75,6 +76,9 @@ public class CharacterController : KinematicBody2D
         coyoteTime.OneShot = true;
         coyoteTime.WaitTime = .5f;
         AddChild(coyoteTime);
+        splashSound = GetNode<AudioStreamPlayer>("AudioStreamPlayer");
+
+
 
     }
 
@@ -86,6 +90,7 @@ public class CharacterController : KinematicBody2D
         if (isUnderWater && !wasUnderWater && Math.Abs(velocity.y) > minSplashSpeed)
         {
             splashParticles.Emitting = true;
+            splashSound.Play();
         }
         wasUnderWater = isUnderWater;
 
