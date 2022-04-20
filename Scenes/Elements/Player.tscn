@@ -6,20 +6,11 @@
 [ext_resource path="res://Sprites/Dust_Particle.png" type="Texture" id=4]
 [ext_resource path="res://Sounds/Splash.wav" type="AudioStream" id=5]
 [ext_resource path="res://Sounds/Jump/Jump-02.wav" type="AudioStream" id=6]
+[ext_resource path="res://UI/Icon_Curious.png" type="Texture" id=5]
 
 [sub_resource type="CapsuleShape2D" id=8]
 radius = 86.6667
 height = 86.6667
-
-[sub_resource type="AtlasTexture" id=5]
-flags = 4
-atlas = ExtResource( 1 )
-region = Rect2( 206, 0, 206, 256 )
-
-[sub_resource type="AtlasTexture" id=6]
-flags = 4
-atlas = ExtResource( 1 )
-region = Rect2( 0, 0, 206, 256 )
 
 [sub_resource type="AtlasTexture" id=9]
 flags = 4
@@ -51,13 +42,18 @@ flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 618, 256, 206, 256 )
 
+[sub_resource type="AtlasTexture" id=5]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 206, 0, 206, 256 )
+
+[sub_resource type="AtlasTexture" id=6]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 206, 256 )
+
 [sub_resource type="SpriteFrames" id=7]
 animations = [ {
-"frames": [ SubResource( 5 ), SubResource( 6 ) ],
-"loop": true,
-"name": "Build",
-"speed": 2.0
-}, {
 "frames": [ SubResource( 9 ), SubResource( 10 ) ],
 "loop": true,
 "name": "Idle",
@@ -72,6 +68,11 @@ animations = [ {
 "loop": true,
 "name": "Run",
 "speed": 7.0
+}, {
+"frames": [ SubResource( 5 ), SubResource( 6 ) ],
+"loop": true,
+"name": "Build",
+"speed": 2.0
 } ]
 
 [sub_resource type="Curve" id=2]
@@ -159,3 +160,7 @@ stream = ExtResource( 5 )
 
 [node name="JumpSFX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
+[node name="IconCurious" type="Sprite" parent="."]
+position = Vector2( -31, -106 )
+scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 5 )
