@@ -1,4 +1,5 @@
 using Godot;
+using TideyUp.Utils;
 using Random = TideyUp.Utils.Random;
 
 public class Water : Sprite
@@ -9,7 +10,7 @@ public class Water : Sprite
     const float SURFACE_WATER_HEIGHT = 160;
     Sprite deepWater;
     Vector2 startPosition;
-    public Timer waveTimer;
+    public Timer waveTimer, warningTimer, warningFlashTimer;
     PackedScene WarningScene = GD.Load<PackedScene>("res://Scenes/Elements/FloodWarning.tscn");
 
     Sprite warning;
@@ -25,13 +26,9 @@ public class Water : Sprite
 
         waveWait = Random.Range(waveWaitMin, waveWaitMax);
         isWave = false;
-        waveTimer = new Timer();
-        waveTimer.OneShot = true;
-        waveTimer.WaitTime = waveWait;
-        waveTimer.Connect("timeout", this, nameof(OnTimerComplete));
-        AddChild(waveTimer);
-        waveTimer.Start();
-
+        waveTimer = Timers.CreateTimer(this, nameof(OnWaveTimerComplete), waveWait);
+        warningTimer = Timers.CreateTimer(this, nameof(OnWarningTimerComplete), waveWait - warningPredictionRange);
+        warningFlashTimer = Timers.CreateTimer(this, nameof(OnWarningFlashTimerComplete), warningFlashSpeed, false);
         CallDeferred(nameof(AddWarningSprite));
     }
 	public override void _ExitTree()
@@ -44,6 +41,7 @@ public class Water : Sprite
         warning = WarningScene.Instance() as Sprite;
         GetParent().AddChild(warning);
         warning.GlobalPosition = new Vector2(958, 384);
+        warning.Hide();
     }
 
     private float depth = 0;
@@ -74,6 +72,8 @@ public class Water : Sprite
     [Export(PropertyHint.Range, "1,120,")] float waveWaitMin = 10;
     [Export(PropertyHint.Range, "1,120,")] float waveWaitMax = 30;
     [Export(PropertyHint.Range, "1,60,")] float waveDuration = 5;
+    [Export(PropertyHint.Range, "0,10,")] float warningPredictionRange = 2;
+    [Export(PropertyHint.Range, "0,5,")] float warningFlashSpeed = 0.25f;
 
     private bool isWave = false;
     private float waveWait;
@@ -81,7 +81,7 @@ public class Water : Sprite
 
     private int waveIndex = -1;
 
-    public void OnTimerComplete()
+    public void OnWaveTimerComplete()
     {
         isWave = !isWave;
 
@@ -100,8 +100,40 @@ public class Water : Sprite
             waterFillSpeedIncrease += waterFillSpeedIncrement;
             waveWait = Random.Range(waveWaitMin, waveWaitMax);
             waveTimer.WaitTime = waveWait;
+
+            // warning
+            warning.Hide();
+            warningTimer.WaitTime = waveWait - warningPredictionRange;
+            warningTimer.Start();
         }
         waveTimer.Start();
+    }
+
+    public void OnWarningTimerComplete()
+    {
+        float depthAfterWave = depth + ((waveWaterFillSpeed + waterFillSpeedIncrease) * waveDuration) + ((baseWaterFillSpeed + waterFillSpeedIncrease) * warningPredictionRange);
+        warning.GlobalPosition = new Vector2(warning.GlobalPosition.x, startPosition.y - depthAfterWave);
+        warning.Show();
+        warningOn = true;
+        warningFlashTimer.Start();
+    }
+
+    bool warningOn = true;
+    public void OnWarningFlashTimerComplete()
+    {
+        if(warningTimer.IsStopped())
+        {
+            warningOn = !warningOn;
+            if(warningOn)
+            {
+                warning.Show();
+            }
+            else
+            {
+                warning.Hide();
+            }
+            warningFlashTimer.Start();
+        }
     }
 
     private void AddPlank(PlankSize size)
