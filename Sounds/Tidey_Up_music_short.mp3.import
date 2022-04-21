@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Tidey_Up_music_short.mp3-6c6d47a33082b857d7ddbeb42fc6f6a3.mp3str"
+
+[deps]
+
+source_file="res://Sounds/Tidey_Up_music_short.mp3"
+dest_files=[ "res://.import/Tidey_Up_music_short.mp3-6c6d47a33082b857d7ddbeb42fc6f6a3.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

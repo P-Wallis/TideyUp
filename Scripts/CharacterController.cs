@@ -59,6 +59,11 @@ public class CharacterController : KinematicBody2D
     bool wasUnderWater = false;
     public Direction direction = Direction.right;
     public State state = State.holdingNothing;
+    public Sprite thoughtBubble;
+    public Texture curious = GD.Load<Texture>("res://UI/Icon_Curious.png");
+    public Texture fixing = GD.Load<Texture>("res://UI/Icon_Fixing.png");
+    public Texture holding = GD.Load<Texture>("res://UI/Icon_Holding.png");
+
 
     private PlankSize plankSize = PlankSize.Medium;
     private Vector2 plankPreviewPosition;
@@ -87,6 +92,7 @@ public class CharacterController : KinematicBody2D
         AddChild(coyoteTime);
         splashSound = GetNode<AudioStreamPlayer>("SplashSFX");
         jumpSound = GetNode<AudioStreamPlayer>("JumpSFX");
+        thoughtBubble = GetNode<Sprite>("IconCurious");
         deathTimerStarted = false;
     }
 
@@ -144,6 +150,12 @@ public class CharacterController : KinematicBody2D
                 if (closestPlank != null && closestPlank.distance < maxPickupDistance)
                 {
                     closestPlank.highlight.Show();
+                    thoughtBubble.Show();
+                    thoughtBubble.Texture = curious;
+                }
+                else if (closestPlank != null && closestPlank.distance > maxPickupDistance)
+                {
+                    thoughtBubble.Hide();
                 }
 
                 //pick up plank
@@ -165,6 +177,7 @@ public class CharacterController : KinematicBody2D
             case State.holdingPlank:
                 HandleHorizontalInput();
                 HandleVerticalInput();
+                thoughtBubble.Texture = holding;
 
                 // Drop Plank
                 if (Input.IsActionJustPressed(BUTTON_CANCEL))
@@ -183,6 +196,7 @@ public class CharacterController : KinematicBody2D
 
             case State.building:
                 velocity.x = 0; //don't move in the building state
+                thoughtBubble.Texture = fixing;
                 if (Input.IsActionJustPressed(BUTTON_CANCEL))
                 {
                     state = State.holdingPlank;
