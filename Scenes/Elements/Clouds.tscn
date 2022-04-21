@@ -1,0 +1,4 @@
+[gd_scene format=2]
+
+[node name="Clouds" type="Node2D"]
+z_index = -100

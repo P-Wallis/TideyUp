@@ -13,10 +13,13 @@ public class Water : Sprite
     public Timer waveTimer, warningTimer, warningFlashTimer;
     PackedScene WarningScene = GD.Load<PackedScene>("res://Scenes/Elements/FloodWarning.tscn");
 
+    private AudioStreamPlayer waveSound;
+
     Sprite warning;
     public override void _Ready()
     {
         deepWater = GetNode<Sprite>("Deep");
+        waveSound = GetNode<AudioStreamPlayer>("WaveSFX");
         startPosition = GlobalPosition;
 
         if (_ == null)
@@ -87,6 +90,7 @@ public class Water : Sprite
 
         if (isWave)
         {
+            waveSound.Play();
             waveTimer.WaitTime = waveDuration;
             waveIndex++;
             for(int i=0; i<waveIndex; i++)

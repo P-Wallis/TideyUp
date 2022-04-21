@@ -53,8 +53,7 @@ public class CharacterController : KinematicBody2D
     public PlankPreview plankPreview;
     public bool isJumping = false;
     public Timer coyoteTime;
-    public AudioStreamPlayer splashSound;
-    public AudioStreamPlayer jumpSound;
+    public AudioStreamPlayer splashSound, jumpSound, pickupSound, hammerSound, pinguSound, pinguCancelSound;
     private Plank closestPlank = null;
     bool wasUnderWater = false;
     public Direction direction = Direction.right;
@@ -92,6 +91,10 @@ public class CharacterController : KinematicBody2D
         AddChild(coyoteTime);
         splashSound = GetNode<AudioStreamPlayer>("SplashSFX");
         jumpSound = GetNode<AudioStreamPlayer>("JumpSFX");
+        pickupSound = GetNode<AudioStreamPlayer>("PickupSFX");
+        hammerSound = GetNode<AudioStreamPlayer>("HammerSFX");
+        pinguSound = GetNode<AudioStreamPlayer>("PinguSFX");
+        pinguCancelSound = GetNode<AudioStreamPlayer>("PinguCancelSFX");
         thoughtBubble = GetNode<Sprite>("IconCurious");
         deathTimerStarted = false;
     }
@@ -113,7 +116,7 @@ public class CharacterController : KinematicBody2D
         {
             deathTimerStarted = true;
             deathTimer = TideyUp.Utils.Timers.CreateTimer(this, nameof(OnDeathTimerComplete), deathTimerDuration);
-            fadePanel = GetParent().GetNode<Polygon2D>("FadePanel");
+            fadePanel = GetNode<Polygon2D>("FadePanel");
             backgroundMusic = GetParent().GetNode<AudioStreamPlayer>("BackgroundMusic");
         }
 
@@ -171,6 +174,9 @@ public class CharacterController : KinematicBody2D
                     closestPlank.Destroy();
                     closestPlank = null;
                     state = State.holdingPlank;
+
+                    pickupSound.PitchScale = Random.Range(0.9f, 1.25f);
+                    pickupSound.Play();
                 }
                 break;
 
@@ -182,6 +188,7 @@ public class CharacterController : KinematicBody2D
                 // Drop Plank
                 if (Input.IsActionJustPressed(BUTTON_CANCEL))
                 {
+                    PlayPinguSound(false);
                     CreatePlankAboveHead();
                     state = State.holdingNothing;
                 }
@@ -198,19 +205,22 @@ public class CharacterController : KinematicBody2D
                 velocity.x = 0; //don't move in the building state
                 thoughtBubble.Texture = fixing;
                 if (Input.IsActionJustPressed(BUTTON_CANCEL))
-                {
+                {;
                     state = State.holdingPlank;
                 }
                 if (Input.IsActionJustPressed(BUTTON_LEFT))
                 {
+                    PlayHammerSound();
                     plankPreview.RotationDegrees -= ROTATION_SNAP;
                 }
                 else if (Input.IsActionJustPressed(BUTTON_RIGHT))
                 {
+                    PlayHammerSound();
                     plankPreview.RotationDegrees += ROTATION_SNAP;
                 }
                 else if (Input.IsActionJustPressed(BUTTON_UP))
                 {
+                    PlayHammerSound();
                     plankPreview.Position -= new Vector2(0, LOCATION_SNAP);
                     if(Mathf.Abs(plankPreview.Position.y - plankPreviewPosition.y) > (LOCATION_MAX_INCREMENTS * LOCATION_SNAP))
                     {
@@ -219,6 +229,7 @@ public class CharacterController : KinematicBody2D
                 }
                 else if (Input.IsActionJustPressed(BUTTON_DOWN))
                 {
+                    PlayHammerSound();
                     plankPreview.Position += new Vector2(0, LOCATION_SNAP);
                     if(Mathf.Abs(plankPreview.Position.y - plankPreviewPosition.y) > (LOCATION_MAX_INCREMENTS * LOCATION_SNAP))
                     {
@@ -227,6 +238,8 @@ public class CharacterController : KinematicBody2D
                 }
                 else if (Input.IsActionJustPressed(BUTTON_SELECT))
                 {
+                    PlayPinguSound();
+                    hammerSound.Stop();
                     Plank plank = CreatePlankAboveHead();
                     state = State.holdingNothing;
                 }
@@ -241,6 +254,26 @@ public class CharacterController : KinematicBody2D
         {
             coyoteTime.Start();
         }
+    }
+
+    void PlayPinguSound(bool select = true)
+    {
+        if(select)
+        {
+            pinguSound.PitchScale = Random.Range(0.95f, 1.1f);
+            pinguSound.Play();
+        }
+        else
+        {
+            pinguCancelSound.PitchScale = Random.Range(0.95f, 1.1f);
+            pinguCancelSound.Play();
+        }
+    }
+
+    void PlayHammerSound()
+    {
+        hammerSound.PitchScale = Random.Range(0.9f, 1.25f);
+        hammerSound.Play();
     }
 
     void HandleHorizontalInput()

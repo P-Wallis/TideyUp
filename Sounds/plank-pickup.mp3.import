@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/plank-pickup.mp3-0ccac2fe24992bf19c25c0074bfa25b4.mp3str"
+
+[deps]
+
+source_file="res://Sounds/plank-pickup.mp3"
+dest_files=[ "res://.import/plank-pickup.mp3-0ccac2fe24992bf19c25c0074bfa25b4.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
