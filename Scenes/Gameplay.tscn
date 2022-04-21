@@ -7,7 +7,7 @@
 [ext_resource path="res://Scenes/Elements/House.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Sprites/Level.png" type="Texture" id=6]
 [ext_resource path="res://Scenes/Elements/Player.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Sounds/Tidey Up Intro music.wav" type="AudioStream" id=8]
+[ext_resource path="res://Sounds/Tidey_Up_music_short.mp3" type="AudioStream" id=8]
 
 [sub_resource type="RectangleShape2D" id=9]
 extents = Vector2( 545.5, 18.5 )
