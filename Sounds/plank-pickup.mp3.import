@@ -11,5 +11,5 @@ dest_files=[ "res://.import/plank-pickup.mp3-0ccac2fe24992bf19c25c0074bfa25b4.mp
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

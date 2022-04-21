@@ -11,5 +11,5 @@ dest_files=[ "res://.import/Flash-flood.mp3-7813ea5fa90f2657f6714b704127db8b.mp3
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

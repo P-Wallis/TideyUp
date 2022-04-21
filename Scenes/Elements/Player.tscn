@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://Sprites/Peng_Sheet.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/CharacterController.cs" type="Script" id=2]
@@ -7,6 +7,10 @@
 [ext_resource path="res://Sounds/Splash.wav" type="AudioStream" id=5]
 [ext_resource path="res://Sounds/Jump/Jump-02.wav" type="AudioStream" id=6]
 [ext_resource path="res://UI/Icon_Curious.png" type="Texture" id=7]
+[ext_resource path="res://Sounds/plank-pickup.mp3" type="AudioStream" id=8]
+[ext_resource path="res://Sounds/Hammer.ogg" type="AudioStream" id=9]
+[ext_resource path="res://Sounds/Fixing/Fixing-02.wav" type="AudioStream" id=10]
+[ext_resource path="res://Sounds/Fixing/Fixing-01.wav" type="AudioStream" id=11]
 
 [sub_resource type="CapsuleShape2D" id=8]
 radius = 86.6667
@@ -115,6 +119,7 @@ scale = Vector2( 0.3, 0.3 )
 z_index = 1
 frames = SubResource( 7 )
 animation = "Idle"
+frame = 1
 playing = true
 
 [node name="Dust" type="CPUParticles2D" parent="."]
@@ -159,6 +164,18 @@ stream = ExtResource( 5 )
 
 [node name="JumpSFX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
+
+[node name="PickupSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+
+[node name="HammerSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+
+[node name="PinguSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+
+[node name="PinguCancelSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
 
 [node name="IconCurious" type="Sprite" parent="."]
 visible = false

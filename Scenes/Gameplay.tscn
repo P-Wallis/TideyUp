@@ -119,6 +119,7 @@ scroll_active = false
 
 [node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
+volume_db = -10.0
 autoplay = true
 
 [node name="EdgeRight" type="StaticBody2D" parent="."]
@@ -139,4 +140,3 @@ shape = SubResource( 11 )
 z_index = 100
 color = Color( 0, 0, 0, 0 )
 polygon = PoolVector2Array( -13, -10, 1035, -8, 1035, 614, -13, 610 )
-
