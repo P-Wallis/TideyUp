@@ -116,7 +116,7 @@ public class CharacterController : KinematicBody2D
         {
             deathTimerStarted = true;
             deathTimer = TideyUp.Utils.Timers.CreateTimer(this, nameof(OnDeathTimerComplete), deathTimerDuration);
-            fadePanel = GetParent().GetNode<Polygon2D>("FadePanel");
+            fadePanel = GetNode<Polygon2D>("FadePanel");
             backgroundMusic = GetParent().GetNode<AudioStreamPlayer>("BackgroundMusic");
         }
 
