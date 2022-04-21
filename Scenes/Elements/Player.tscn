@@ -94,7 +94,7 @@ min_value = -1.0
 _data = [ Vector2( 0, 1 ), 0.0, -0.268505, 0, 0, Vector2( 1, 0.698113 ), -1.04099, 0.0, 0, 0 ]
 
 [node name="Player" type="KinematicBody2D"]
-collision_mask = 3
+collision_mask = 7
 collision/safe_margin = 0.3
 script = ExtResource( 2 )
 JumpImpulse = -250.0
@@ -115,7 +115,6 @@ scale = Vector2( 0.3, 0.3 )
 z_index = 1
 frames = SubResource( 7 )
 animation = "Idle"
-frame = 1
 playing = true
 
 [node name="Dust" type="CPUParticles2D" parent="."]
