@@ -76,7 +76,7 @@ position = Vector2( 375, 472 )
 position = Vector2( 642, 544 )
 
 [node name="Player" parent="." instance=ExtResource( 7 )]
-position = Vector2( 158, 541 )
+position = Vector2( 116, 541 )
 z_index = 1
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
@@ -117,3 +117,8 @@ scroll_active = false
 [node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
 autoplay = true
+
+[node name="FadePanel" type="Polygon2D" parent="."]
+z_index = 100
+color = Color( 0, 0, 0, 0 )
+polygon = PoolVector2Array( -13, -10, 1035, -8, 1035, 614, -13, 610 )

@@ -43,6 +43,7 @@ public class CharacterController : KinematicBody2D
     [Export] public float JumpImpulse = -400;
     [Export] private float minDustSpeed = 0.1f;
     [Export] private float minSplashSpeed = 0.1f;
+    [Export] private float deathTimerDuration = 5f;
 
     // Class Variables
     Vector2 velocity;
@@ -61,7 +62,10 @@ public class CharacterController : KinematicBody2D
 
     private PlankSize plankSize = PlankSize.Medium;
     private Vector2 plankPreviewPosition;
-
+    bool deathTimerStarted;
+    Timer deathTimer;
+    Polygon2D fadePanel;
+    AudioStreamPlayer backgroundMusic;
 
     public CharacterController()
     {
@@ -83,6 +87,7 @@ public class CharacterController : KinematicBody2D
         AddChild(coyoteTime);
         splashSound = GetNode<AudioStreamPlayer>("SplashSFX");
         jumpSound = GetNode<AudioStreamPlayer>("JumpSFX");
+        deathTimerStarted = false;
     }
 
     public override void _Process(float delta)
@@ -98,10 +103,28 @@ public class CharacterController : KinematicBody2D
         }
         wasUnderWater = isUnderWater;
 
-        if(Plank.AreAllPlanksUnderWater())
+        if(Plank.AreAllPlanksUnderWater() && !deathTimerStarted)
         {
-            SceneManager._.LoadScene(SceneID.Outro);
+            deathTimerStarted = true;
+            deathTimer = TideyUp.Utils.Timers.CreateTimer(this, nameof(OnDeathTimerComplete), deathTimerDuration);
+            fadePanel = GetParent().GetNode<Polygon2D>("FadePanel");
+            backgroundMusic = GetParent().GetNode<AudioStreamPlayer>("BackgroundMusic");
         }
+
+        if(deathTimerStarted)
+        {
+            float fade = (deathTimer.TimeLeft/deathTimer.WaitTime);
+            if(fade > 0)
+            {
+                backgroundMusic.PitchScale = fade;
+            }
+            fadePanel.Color = new Color(0,0,0, 1 - fade);
+        }
+    }
+
+    public void OnDeathTimerComplete()
+    {
+        SceneManager._.LoadScene(SceneID.Outro);
     }
 
     public override void _PhysicsProcess(float delta)
