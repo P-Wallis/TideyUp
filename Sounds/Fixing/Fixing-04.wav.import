@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Fixing-04.wav-98b238010826f5153682008dd4c7d653.sample"
+
+[deps]
+
+source_file="res://Sounds/Fixing/Fixing-04.wav"
+dest_files=[ "res://.import/Fixing-04.wav-98b238010826f5153682008dd4c7d653.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
