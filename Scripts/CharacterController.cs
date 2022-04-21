@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using Random = TideyUp.Utils.Random;
 
 public class CharacterController : KinematicBody2D
 {
@@ -23,11 +24,15 @@ public class CharacterController : KinematicBody2D
     const float WALK_SPEED = 200;
     const float SPRITE_SCALE = .3f;
     const float ROTATION_SNAP = 15f;
-    const string BUTTON_SELECT = "select";
-    const string BUTTON_CANCEL = "cancel";
-    const string BUTTON_LEFT = "left";
-    const string BUTTON_RIGHT = "right";
-    const string BUTTON_JUMP = "jump";
+    const float LOCATION_SNAP = 10f;
+    const int LOCATION_MAX_INCREMENTS = 3;
+    public const string BUTTON_SELECT = "select";
+    public const string BUTTON_CANCEL = "cancel";
+    public const string BUTTON_LEFT = "left";
+    public const string BUTTON_RIGHT = "right";
+    public const string BUTTON_JUMP = "jump";
+    public const string BUTTON_UP = "up";
+    public const string BUTTON_DOWN = "down";
     private const string ANIM_RUN = "Run";
     private const string ANIM_IDLE = "Idle";
     private const string ANIM_JUMP = "Jump";
@@ -48,13 +53,15 @@ public class CharacterController : KinematicBody2D
     public bool isJumping = false;
     public Timer coyoteTime;
     public AudioStreamPlayer splashSound;
-
+    public AudioStreamPlayer jumpSound;
     private Plank closestPlank = null;
     bool wasUnderWater = false;
     public Direction direction = Direction.right;
     public State state = State.holdingNothing;
 
     private PlankSize plankSize = PlankSize.Medium;
+    private Vector2 plankPreviewPosition;
+
 
     public CharacterController()
     {
@@ -69,24 +76,24 @@ public class CharacterController : KinematicBody2D
         dustParticles = GetNode<CPUParticles2D>("Dust");
         splashParticles = GetNode<CPUParticles2D>("Splash");
         plankPreview = GetNode<PlankPreview>("PlankPreview");
+        plankPreviewPosition = plankPreview.Position;
         coyoteTime = new Timer();
         coyoteTime.OneShot = true;
         coyoteTime.WaitTime = .5f;
         AddChild(coyoteTime);
-        splashSound = GetNode<AudioStreamPlayer>("AudioStreamPlayer");
-
-
-
+        splashSound = GetNode<AudioStreamPlayer>("SplashSFX");
+        jumpSound = GetNode<AudioStreamPlayer>("JumpSFX");
     }
 
     public override void _Process(float delta)
     {
         bool isUnderWater = Water._.IsUnderWater(GlobalPosition.y);
-        dustParticles.Emitting = !isUnderWater && IsOnFloor() && Math.Abs(velocity.x) > minDustSpeed;
+        dustParticles.Emitting = !isUnderWater && IsOnFloor() && Mathf.Abs(velocity.x) > minDustSpeed;
 
-        if (isUnderWater && !wasUnderWater && Math.Abs(velocity.y) > minSplashSpeed)
+        if (isUnderWater && !wasUnderWater && Mathf.Abs(velocity.y) > minSplashSpeed)
         {
             splashParticles.Emitting = true;
+            splashSound.PitchScale = Random.Range(0.9f, 1.25f);
             splashSound.Play();
         }
         wasUnderWater = isUnderWater;
@@ -103,7 +110,7 @@ public class CharacterController : KinematicBody2D
         {
             case State.holdingNothing:
                 HandleHorizontalInput();
-                HandleJumpInput();
+                HandleVerticalInput();
 
                 //highlight closest plank
                 if (closestPlank != null)
@@ -122,18 +129,19 @@ public class CharacterController : KinematicBody2D
                     closestPlank.distance < maxPickupDistance)
                 {
                     plankSize = closestPlank.size;
-                    closestPlank.Destroy();
-                    closestPlank = null;
-                    plankPreview.RotationDegrees = 0;
+                    plankPreview.Position = plankPreviewPosition;
+                    plankPreview.RotationDegrees = Mathf.Round(closestPlank.RotationDegrees/ROTATION_SNAP) * ROTATION_SNAP;
                     plankPreview.SetSize(plankSize);
                     plankPreview.Show();
+                    closestPlank.Destroy();
+                    closestPlank = null;
                     state = State.holdingPlank;
                 }
                 break;
 
             case State.holdingPlank:
                 HandleHorizontalInput();
-                HandleJumpInput();
+                HandleVerticalInput();
 
                 // Drop Plank
                 if (Input.IsActionJustPressed(BUTTON_CANCEL))
@@ -163,6 +171,22 @@ public class CharacterController : KinematicBody2D
                 else if (Input.IsActionJustPressed(BUTTON_RIGHT))
                 {
                     plankPreview.RotationDegrees += ROTATION_SNAP;
+                }
+                else if (Input.IsActionJustPressed(BUTTON_UP))
+                {
+                    plankPreview.Position -= new Vector2(0, LOCATION_SNAP);
+                    if(Mathf.Abs(plankPreview.Position.y - plankPreviewPosition.y) > (LOCATION_MAX_INCREMENTS * LOCATION_SNAP))
+                    {
+                        plankPreview.Position = plankPreviewPosition - new Vector2(0, (LOCATION_MAX_INCREMENTS * LOCATION_SNAP));
+                    }
+                }
+                else if (Input.IsActionJustPressed(BUTTON_DOWN))
+                {
+                    plankPreview.Position += new Vector2(0, LOCATION_SNAP);
+                    if(Mathf.Abs(plankPreview.Position.y - plankPreviewPosition.y) > (LOCATION_MAX_INCREMENTS * LOCATION_SNAP))
+                    {
+                        plankPreview.Position = plankPreviewPosition + new Vector2(0, (LOCATION_MAX_INCREMENTS * LOCATION_SNAP));
+                    }
                 }
                 else if (Input.IsActionJustPressed(BUTTON_SELECT))
                 {
@@ -220,7 +244,7 @@ public class CharacterController : KinematicBody2D
         }
     }
 
-    void HandleJumpInput()
+    void HandleVerticalInput()
     {
         if(!IsOnFloor())
         {
@@ -235,11 +259,21 @@ public class CharacterController : KinematicBody2D
                 isJumping = true;
                 coyoteTime.Stop();
                 animatedSprite.Play(ANIM_JUMP);
+                jumpSound.PitchScale = Random.Range(0.95f, 1.1f);
+                jumpSound.Play();
                 velocity.y += JumpImpulse;
                 if(velocity.y < JumpImpulse)
                 {
                     velocity.y = JumpImpulse;
                 }
+            }
+        }
+
+        if (Input.IsActionJustPressed(BUTTON_DOWN))
+        {
+            if(velocity.y < JumpImpulse*-0.5f)
+            {
+                velocity.y = JumpImpulse*-0.5f;
             }
         }
     }

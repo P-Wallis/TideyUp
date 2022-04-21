@@ -87,56 +87,59 @@ public class Plank : RigidBody2D
 		// Enable and disable collision with the player
 		if (playerNode != null)
 		{
-			Vector2 l = left.GlobalPosition;
-			Vector2 r = right.GlobalPosition;
-			//distance calculation section
-			Node2D p2D = (Node2D)playerNode;
-			Vector2 p = p2D.GlobalPosition;
-			float m = ((r.y - l.y) / (r.x - l.x));
-			float b = l.y - (l.x * m);
-			float y = (m * p.x) + b;
-			distance = float.MaxValue;
-			float l_to_p = (r - l).Dot(p - l);
-			float r_to_p = (l - r).Dot(p - r);
-
-			if (l_to_p < 0 || r_to_p < 0)
+			if(!Input.IsActionPressed(CharacterController.BUTTON_DOWN))
 			{
-				distance = Math.Min(l.DistanceTo(p), r.DistanceTo(p));
-			}
-			else
-			{
-				distance = Math.Abs(y - p.y) / (float)Math.Sqrt((double)(m * m + 1));
-			}
+				Vector2 l = left.GlobalPosition;
+				Vector2 r = right.GlobalPosition;
+				//distance calculation section
+				Node2D p2D = (Node2D)playerNode;
+				Vector2 p = p2D.GlobalPosition;
+				float m = ((r.y - l.y) / (r.x - l.x));
+				float b = l.y - (l.x * m);
+				float y = (m * p.x) + b;
+				distance = float.MaxValue;
+				float l_to_p = (r - l).Dot(p - l);
+				float r_to_p = (l - r).Dot(p - r);
 
-			// First, check if we're horizontal
-			Vector2 dir = r - l;
-			dir = dir / dir.DistanceTo(Vector2.Zero); // normalize the direction vector
-
-			sprite.Modulate = new Color(0.5f, 0.5f, 0.5f);
-
-			if (Math.Abs(dir.Dot(Vector2.Up)) < (PLAYER_WALK_ANGLE / 90))
-			{
-				// Check if the player is above us
-
-				if (p.y < (y + 2f))
+				if (l_to_p < 0 || r_to_p < 0)
 				{
-					// check if the player is close
+					distance = Mathf.Min(l.DistanceTo(p), r.DistanceTo(p));
+				}
+				else
+				{
+					distance = Mathf.Abs(y - p.y) / Mathf.Sqrt((m * m + 1));
+				}
 
-					if (distance < PLAYER_WALK_DISTANCE)
+				// First, check if we're horizontal
+				Vector2 dir = r - l;
+				dir = dir / dir.DistanceTo(Vector2.Zero); // normalize the direction vector
+
+				sprite.Modulate = new Color(0.5f, 0.5f, 0.5f);
+
+				if (Mathf.Abs(dir.Dot(Vector2.Up)) < (PLAYER_WALK_ANGLE / 90))
+				{
+					// Check if the player is above us
+
+					if (p.y < (y + 2f))
 					{
-						if (!collidesWithPlayer)
+						// check if the player is close
+
+						if (distance < PLAYER_WALK_DISTANCE)
 						{
-							collidesWithPlayer = true;
-							RemoveCollisionExceptionWith(playerNode);
-							Mode = RigidBody2D.ModeEnum.Kinematic;
+							if (!collidesWithPlayer)
+							{
+								collidesWithPlayer = true;
+								RemoveCollisionExceptionWith(playerNode);
+								Mode = RigidBody2D.ModeEnum.Kinematic;
+							}
+							return;
 						}
-						return;
 					}
 				}
-			}
-			else
-			{
-				sprite.Modulate = new Color(1, 1, 1);
+				else
+				{
+					sprite.Modulate = new Color(1, 1, 1);
+				}
 			}
 
 			if (collidesWithPlayer)
@@ -238,7 +241,7 @@ public class Plank : RigidBody2D
 		float u = ((mL.x - oL.x) * (mL.y - mR.y)) - ((mL.y - oL.y) * (mL.x - mR.x));
 
 		bool noOverlap = false;
-		if (Math.Abs(d) > 0.0001f)
+		if (Mathf.Abs(d) > 0.0001f)
 		{
 			t = t / d;
 			u = u / d;
