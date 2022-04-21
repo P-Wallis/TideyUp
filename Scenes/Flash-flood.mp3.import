@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Flash-flood.mp3-7b4acef4c953b50e420bc9a60c46874a.mp3str"
+
+[deps]
+
+source_file="res://Scenes/Flash-flood.mp3"
+dest_files=[ "res://.import/Flash-flood.mp3-7b4acef4c953b50e420bc9a60c46874a.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
