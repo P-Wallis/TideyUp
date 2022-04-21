@@ -58,9 +58,11 @@ polygon = PoolVector2Array( -2.49829, -0.606247, -522, -1, -522, 42, -2, 42 )
 
 [node name="BigPlank(RigidBody2D)" parent="Plank Stack" instance=ExtResource( 1 )]
 position = Vector2( 338, 520 )
+size = 1
 
 [node name="BigPlank(RigidBody2D)2" parent="Plank Stack" instance=ExtResource( 1 )]
 position = Vector2( 341, 536 )
+size = 1
 
 [node name="Plank(RigidBody2D)2" parent="Plank Stack" instance=ExtResource( 3 )]
 position = Vector2( 419, 504 )
@@ -74,6 +76,7 @@ position = Vector2( 410, 488 )
 
 [node name="SmallPlank(RigidBody2D)" parent="Plank Stack" instance=ExtResource( 2 )]
 position = Vector2( 375, 472 )
+size = 1
 
 [node name="House" parent="." instance=ExtResource( 5 )]
 position = Vector2( 642, 544 )
@@ -114,6 +117,7 @@ To build you need to:
 - Pickup using 'E'
 - Then enter build mode with 'E'
 - Rotate planks using 'LEFT' and 'RIGHT'
+- Move planks using 'UP' and 'DOWN'
 You can cancel any step using 'Q'"
 scroll_active = false
 
